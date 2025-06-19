@@ -11,7 +11,9 @@ This is extremely powerful as in many cases, you may want to run JavaScript, but
 - Runtime
 - Depth of calls (recursion)
 
-This makes it easy to generate and run JavaScript dynamically within your prompt as a tool
+This makes it easy to generate and run JavaScript dynamically within your prompt as a tool.
+
+This can unlock a lot of use cases where JavaScript is needed to process some JSON, for example, and return text or run some transformation logic on incoming data.
 
 ## Project Setup
 
