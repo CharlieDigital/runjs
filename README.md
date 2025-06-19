@@ -2,18 +2,59 @@
 
 This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.
 
-This is extremely powerful as in many cases, you may want to run JavaScript, but it may be difficult to deploy it into live infrastructure (e.g. deploy a serverless function for each piece of code).
+This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
 
-[Jint](https://github.com/sebastienros/jint) is a C# library that embeds a JavaScript runtime into .NET and allows controlling the execution sandbox by specifying:
+The RunJS MCP server uses [Jint](https://github.com/sebastienros/jint) -- a C# library that embeds a JavaScript runtime into .NET and allows controlling the execution sandbox by specifying:
 
 - Memory limits
 - Number of statements
 - Runtime
 - Depth of calls (recursion)
 
-This makes it easy to generate and run JavaScript dynamically within your prompt as a tool.
+This makes it easy to generate and run JavaScript dynamically within your prompt as a tool without risk.
 
 This can unlock a lot of use cases where JavaScript is needed to process some JSON, for example, and return text or run some transformation logic on incoming data.
+
+Here's an example call using the Vercel AI SDK:
+
+```typescript
+const mcpClient = await createMCPClient({
+  transport: {
+    type: "sse",
+    url: "http://localhost:5000/sse",
+  },
+});
+
+const tools = await mcpClient.tools();
+
+const prompt = `
+  Generate and execute JavaScript that can parse the following JSON
+  Return only the value of the name property:
+  { "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }`
+
+try {
+  const { text } = await generateText({
+    model: openai("gpt-4.1-nano"),
+    prompt,
+    tools,
+    maxSteps: 10, // 👈 Very, very important or you get no output!
+  });
+
+  console.log("Output:", text);
+} finally {
+  await mcpClient.close();
+}
+```
+
+The LLM will generate the following JavaScript:
+
+```javascript
+const jsonString = '{ "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }';
+const obj = JSON.parse(jsonString);
+obj.name;
+```
+
+And use the RunJS MCP server to execute it 🚀
 
 ## Project Setup
 
