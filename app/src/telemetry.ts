@@ -10,6 +10,7 @@ import {
   ATTR_SERVICE_VERSION,
 } from "@opentelemetry/semantic-conventions";
 
+// OpenTelemetry configuration for visibility (http://localhost:18888)
 const traceProvider = new NodeTracerProvider({
   spanProcessors: [new SimpleSpanProcessor(new OTLPTraceExporter())],
   resource: resourceFromAttributes({
