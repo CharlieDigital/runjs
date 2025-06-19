@@ -66,7 +66,7 @@ From the `/app` directory, run the following:
 ```shell
 cd app
 npm i
-npm run app -- "Use your echo tool wih my name: <YOUR_NAME_HERE>; write out your response"
+npm run app -- "Use your echo tool with my name: <YOUR_NAME_HERE>; write out your response"
 ```
 
 This should invoke the .NET MCP endpoint and output your name!
@@ -77,7 +77,9 @@ This should invoke the .NET MCP endpoint and output your name!
 
 [See the workstream here](https://github.com/modelcontextprotocol/csharp-sdk/pull/377)
 
-This is only suitable for running in a private network.
+**This is only suitable for running in a private network at the moment.**
+
+Why might you use this? If your runtime application is Python, JavaScript, or some other language and you need a fast, easy, secure, controlled context to run generated code.
 
 ## Running the Server
 
