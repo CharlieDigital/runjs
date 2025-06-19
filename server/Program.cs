@@ -7,18 +7,17 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Setup the services
 builder.AddCustomLogging();
 builder.Services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
+builder.Services.AddTelemetry(); // OpenTelemetry @ http://localhost:18888
 
-// OpenTelemetry configuration for visibility (http://localhost:18888)
-builder.Services.AddTelemetry();
-
+// Build and start app
 var app = builder.Build();
-
 app.MapMcp();
-
 app.Run();
 
+// Example MCP tool implementations
 [McpServerToolType]
 public static class EchoTool
 {

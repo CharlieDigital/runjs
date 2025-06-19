@@ -39,7 +39,9 @@ Once installed, you can run the following command to start the server:
 dotnet run --project server
 ```
 
-This starts the MCP server on port 5000.  To use this with the LLM API call, you will need to expose it to OpenAI using a proxy like ngrok or the [VS Code Ports tool](https://code.visualstudio.com/docs/debugtest/port-forwarding).
+This starts the MCP server on port 5000.  For local use or use in a private network, you do not need to do anything special.  To expose your local MCP to an external client (e.g. local MCP and deployed application), you will need to map a proxy.
+
+To use this with the LLM API call from a remote origin, you will need to expose it to OpenAI using a proxy like ngrok or the [VS Code Ports tool](https://code.visualstudio.com/docs/debugtest/port-forwarding).
 
 > 👉 Be sure to set the port as public
 
@@ -48,6 +50,13 @@ Once you've done this, you will need to create a copy of the `.env.sample` file 
 ```text
 OPENAI_API_KEY=sk-proj-kSZWV-M7.......K_MMv8JZRmIA
 MCP_ENDPOINT=https://mhjt5hqd-5000.use.devtunnels.ms/sse
+```
+
+If you are only using a local call (like the `/app` directory):
+
+```text
+OPENAI_API_KEY=sk-proj-kSZWV-M7.......K_MMv8JZRmIA
+MCP_ENDPOINT=http://localhost:5000/sse
 ```
 
 From the `/app` directory, run the following:
@@ -65,6 +74,8 @@ This should invoke the .NET MCP endpoint and output your name!
 🚨 **THERE IS CURRENTLY NO AUTH** 🚨
 
 [See the workstream here](https://github.com/modelcontextprotocol/csharp-sdk/pull/377)
+
+This is only suitable for running in a private network.
 
 ## Running the Server
 
@@ -93,6 +104,9 @@ npm run app -- "Echo my name back to me: Charles"
 
 # Generate and execute JavaScript
 npm run app -- "Generate some JavaScript that will lowercase and return the string 'Hello, World' and execute it.  Give me the results; ONLY THE RESULTS"
+
+# Something more complex"
+npm run app -- 'Generate and execute JavaScript that can parse the following JSON and return the value of the name property: { "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }'
 ```
 
 If you run the following:

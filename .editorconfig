@@ -1,0 +1,5 @@
+# This file is the top-most EditorConfig file
+root = true
+
+[*.{cs}]
+indent_size = 4
