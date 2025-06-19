@@ -2,36 +2,16 @@
 using Jint;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
-using OpenTelemetry;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddConsole(consoleLogOptions =>
-{
-    // Configure all logs to go to stderr
-    consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
-});
-
+builder.AddCustomLogging();
 builder.Services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
 
 // OpenTelemetry configuration for visibility (http://localhost:18888)
-builder
-    .Services.AddOpenTelemetry()
-    .ConfigureResource(r => r.AddService("runjs:server"))
-    .WithTracing(b =>
-        b.AddSource("*")
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .ConfigureResource(r => r.AddService("runjs:server:http"))
-    )
-    .WithMetrics(b => b.AddMeter("*").AddAspNetCoreInstrumentation().AddHttpClientInstrumentation())
-    .WithLogging()
-    .UseOtlpExporter();
+builder.Services.AddTelemetry();
 
 var app = builder.Build();
 
@@ -42,6 +22,8 @@ app.Run();
 [McpServerToolType]
 public static class EchoTool
 {
+    private static readonly ILogger Log = Serilog.Log.ForContext(typeof(EchoTool));
+
     [
         McpServerTool(Name = "echo"),
         Description(
@@ -50,7 +32,7 @@ public static class EchoTool
     ]
     public static string Echo(string message)
     {
-        Console.WriteLine($"Echoing message: {message}");
+        Log.Here().Information($"Echoing message: {message}");
         return $"Hello to you! {message}";
     }
 }
@@ -58,6 +40,8 @@ public static class EchoTool
 [McpServerToolType]
 public static class JintTool
 {
+    private static readonly ILogger Log = Serilog.Log.ForContext(typeof(JintTool));
+
     [
         McpServerTool(Name = "runJavaScript"),
         Description("Runs JavaScript code and returns the result.")
@@ -67,7 +51,7 @@ public static class JintTool
             string code
     )
     {
-        Console.WriteLine($"Running JavaScript code: {code}");
+        Log.Here().Information("Running JavaScript code: {Code}", code);
 
         var engine = new Engine(options =>
         {
