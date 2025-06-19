@@ -20,10 +20,13 @@ The project is set up in the following structure:
 ```text
 📁 app
   📁 src                      # The client application using Vercel AI SDK
+  .env                        # 👈 Make your own from the .env.sample
   .env.sample                 # Sample .envfile; make a copy as .env
 📁 server
   Program.cs                  # A .NET MCP server exposing the Jint tool
+builder-server.sh             # Simple script (command) to build the container
 docker-compose.yaml           # Start the Aspire Dashboard container for OTEL
+Dockerfile                    # Dockerfile for the .NET server app
 ```
 
 ## Configuring Your Local Environment
