@@ -78,6 +78,18 @@ cd app
 npm run app -- "My prompt goes here"
 ```
 
+To test this, you can run two types of prompts:
+
+```shell
+cd app
+
+# Just test the echo
+npm run app -- "Echo my name back to me: Charles"
+
+# Generate and execute JavaScript
+npm run app -- "Generate some JavaScript that will lowercase and return the string 'Hello, World' and execute it.  Give me the results; ONLY THE RESULTS"
+```
+
 If you run the following:
 
 ```shell
