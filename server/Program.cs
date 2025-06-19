@@ -67,6 +67,8 @@ public static class JintTool
             string code
     )
     {
+        Console.WriteLine($"Running JavaScript code: {code}");
+
         var engine = new Engine(options =>
         {
             options.LimitMemory(1_000_000); // 1 MB
