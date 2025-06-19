@@ -62,7 +62,7 @@ The project is set up in the following structure:
 
 ```text
 📁 app
-  📁 src                      # The client application using Vercel AI SDK
+  📁 src                      # A sample client application using Vercel AI SDK
   .env                        # 👈 Make your own from the .env.sample
   .env.sample                 # Sample .envfile; make a copy as .env
 📁 server
