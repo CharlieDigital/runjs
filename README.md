@@ -29,6 +29,7 @@ const tools = await mcpClient.tools();
 
 const prompt = `
   Generate and execute JavaScript that can parse the following JSON
+  The JavaScript should 'return' the value
   Return only the value of the name property:
   { "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }`
 
