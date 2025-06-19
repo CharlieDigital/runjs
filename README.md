@@ -59,7 +59,9 @@ This should invoke the .NET MCP endpoint and output your name!
 
 ## Security
 
-This code uses very simple API key based security.  If you need it to be more secure, fork it!
+🚨 **THERE IS CURRENTLY NO AUTH** 🚨
+
+[See the workstream here](https://github.com/modelcontextprotocol/csharp-sdk/pull/377)
 
 ## Running the Server
 
