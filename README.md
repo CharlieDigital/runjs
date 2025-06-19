@@ -2,6 +2,8 @@
 
 This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.
 
+> HTTP `fetch` is currently not supported; I plan on adding a wrapper for .NET's `HttpClient`.  You can use this to process and transform large JSON payloads in tool calls as LLMs are notoriously bad at processing large JSON payloads.
+
 This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
 
 The RunJS MCP server uses [Jint](https://github.com/sebastienros/jint) -- a C# library that embeds a JavaScript runtime into .NET and allows controlling the execution sandbox by specifying:
