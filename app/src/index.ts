@@ -34,7 +34,7 @@ program.argument("<prompt>", "The prompt to execute").action(async (prompt) => {
       maxSteps: 10, // 👈 Very, very important or you get no output!
     });
 
-    console.log("Output:", text);
+    console.log("  ⮑  Output:", text);
   } finally {
     await mcpClient.close();
   }

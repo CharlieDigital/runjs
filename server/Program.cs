@@ -52,6 +52,12 @@ public static class JintTool
     {
         Log.Here().Information("Running JavaScript code: {Code}", code);
 
+        var wrappedCode =
+            $@"
+            function main() {{
+                {code}
+            }}";
+
         var engine = new Engine(options =>
         {
             options.LimitMemory(1_000_000); // 1 MB
@@ -59,7 +65,9 @@ public static class JintTool
             options.MaxStatements(500);
         });
 
-        var result = engine.Execute(code);
+        var result = engine.Execute(wrappedCode).Invoke("main");
+
+        Log.Here().Information("  ⮑  Executed JavaScript code, result: {Result}", result);
 
         return result?.ToString() ?? "void";
     }
