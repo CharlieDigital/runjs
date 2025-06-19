@@ -52,7 +52,7 @@ The LLM will generate the following JavaScript:
 ```javascript
 const jsonString = '{ "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }';
 const obj = JSON.parse(jsonString);
-obj.name;
+return obj.name;
 ```
 
 And use the RunJS MCP server to execute it 🚀
