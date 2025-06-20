@@ -4,6 +4,8 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
+namespace RunJS;
+
 /// <summary>
 /// Setup class to add OpenTelemetry tracing, metrics, and logging to the service
 /// collection for observability of the call paths.

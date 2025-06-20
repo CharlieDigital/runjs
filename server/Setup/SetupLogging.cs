@@ -6,6 +6,8 @@ using Serilog;
 using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
+namespace RunJS;
+
 /// <summary>
 /// Logging setup for Serilog.
 /// </summary>

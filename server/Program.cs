@@ -3,6 +3,7 @@ using Jint;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ModelContextProtocol.Server;
+using RunJS;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

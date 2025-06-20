@@ -77,7 +77,7 @@ Dockerfile                    # Dockerfile for the .NET server app
 
 ## Configuring Your Local Environment
 
-You'll need to [Install the .NET SDK if you don't have it](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks).  These are available for Windows, Linux, and macOS.
+You'll need to [install the .NET SDK if you don't have it](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks); it is available for Windows, Linux, and macOS.
 
 Once installed, you can run the following command to start the server:
 
