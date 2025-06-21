@@ -13,12 +13,19 @@
             <QInput
               v-model="secretValue"
               label="Secret Value"
-              type="password"
               color="pink"
-              hint="A secret value like an API key that is required to make the API call.  This value is encrypted and stored securely."
+              hint="A secret value (like an API key) that is encrypted and stored securely.  When you click 'Store Secret', the value will be saved and a unique ID will be generated.  Use this ID in your prompt to refer to the secret."
+              :type="showSecret ? 'text' : 'password'"
               outlined
             >
               <template #append>
+                <QBtn
+                  color="pink"
+                  :icon="showSecret ? tabOutlineEyeOff : tabOutlineEye"
+                  @click="showSecret = !showSecret"
+                  flat
+                  rounded
+                />
                 <QBtn
                   color="pink"
                   :icon-right="tabOutlineKey"
@@ -109,12 +116,15 @@
 <script setup lang="ts">
 import { Notify } from "quasar";
 import {
+  tabOutlineEye,
+  tabOutlineEyeOff,
   tabOutlineKey,
   tabOutlinePlayerPlay,
 } from "quasar-extras-svg-icons/tabler-icons-v3";
 
+const showSecret = ref(true);
 const secretId = ref("none");
-const secretValue = ref("");
+const secretValue = ref("Abracadabra!");
 const prompt = ref("");
 const result = ref("");
 const services = ref(["jsonplaceholder", "httpbin"]);
