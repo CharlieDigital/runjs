@@ -1,4 +1,5 @@
 using System.Text;
+using Jint;
 using Serilog;
 
 namespace RunJS;
@@ -7,10 +8,23 @@ namespace RunJS;
 /// .NET `HttpClient` implementation that provides a JS `fetch`-like interface.
 /// This will be handed to the Jint Engine to allow it to execute HTTP requests.
 /// </summary>
-public class FetchHttpClient
+public class FetchHttpClient(Engine engine) : IDisposable
 {
-    private static readonly HttpClient _httpClient = new();
+    private static readonly HttpClient _httpClient;
     private static readonly ILogger Log = Serilog.Log.ForContext<FetchHttpClient>();
+    private bool _disposed;
+    private List<HttpResponseMessage> _responses = [];
+
+    static FetchHttpClient()
+    {
+        var handler = new HttpClientHandler
+        {
+            // Allow self-signed certificates for testing purposes.
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+
+        _httpClient = new HttpClient(handler);
+    }
 
     /// <summary>
     /// Performs an HTTP request. This method mimics the JavaScript `fetch` function.
@@ -18,7 +32,7 @@ public class FetchHttpClient
     /// <param name="url">The URL for the request.</param>
     /// <param name="options">Request options object containing method, body, headers, etc. Can be null for GET requests.</param>
     /// <returns>A `Task` that resolves to a `FetchResponse` object.</returns>
-    public async Task<FetchResponse> fetch(string url, dynamic? options = null)
+    public async Task<FetchResponse> Fetch(string url, dynamic? options = null)
     {
         // Extract method from options, default to GET
         var method = options?.method?.ToString() ?? "GET";
@@ -97,12 +111,49 @@ public class FetchHttpClient
 
         // The `HttpResponseMessage` is not disposed here because it is passed to the `FetchResponse`
         // which needs to be able to read the response content stream.
-        var response = await _httpClient.SendAsync(request);
+        try
+        {
+            var response = await _httpClient.SendAsync(request);
 
-        // We don't call `EnsureSuccessStatusCode()` because the JS fetch API doesn't throw on HTTP error statuses.
-        // Instead, it returns a response with `ok` set to `false`. The `FetchResponse` class handles this.
-        Log.Here().Information("Request completed with status {StatusCode}", response.StatusCode);
+            _responses.Add(response);
 
-        return new FetchResponse(response);
+            // We don't call `EnsureSuccessStatusCode()` because the JS fetch API doesn't throw on HTTP error statuses.
+            // Instead, it returns a response with `ok` set to `false`. The `FetchResponse` class handles this.
+            Log.Here()
+                .Information("Request completed with status {StatusCode}", response.StatusCode);
+
+            return new FetchResponse(response, engine);
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Handle disposal of the responses since we can't dispose them immediately.
+    /// </summary>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                foreach (var response in _responses)
+                {
+                    response?.Dispose();
+                }
+
+                _responses.Clear();
+            }
+
+            _disposed = true;
+        }
     }
 }

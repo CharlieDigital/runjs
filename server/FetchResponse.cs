@@ -1,5 +1,11 @@
 using System.Text;
 using System.Text.Json;
+using Jint;
+using Jint.Native;
+using Jint.Native.Json;
+using Jint.Native.Object;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace RunJS;
 
@@ -7,7 +13,7 @@ namespace RunJS;
 /// Represents the response to a request, mimicking the JavaScript Response object interface.
 /// This is intended to be returned by a fetch-like function to a JavaScript engine.
 /// </summary>
-public class FetchResponse(HttpResponseMessage responseMessage)
+public class FetchResponse(HttpResponseMessage responseMessage, Engine engine)
 {
     private byte[]? _bodyBytes; // Cache for the response body.
 
@@ -24,7 +30,8 @@ public class FetchResponse(HttpResponseMessage responseMessage)
     /// <summary>
     /// The status message corresponding to the status code.
     /// </summary>
-    public string statusText { get; } = responseMessage.ReasonPhrase ?? string.Empty;
+    public string statusText { get; } =
+        responseMessage.ReasonPhrase ?? string.Empty;
 
     /// <summary>
     /// A ReadableStream of the body contents.
@@ -32,7 +39,8 @@ public class FetchResponse(HttpResponseMessage responseMessage)
     public Stream? body { get; } = responseMessage.Content?.ReadAsStream();
 
     /// <summary>
-    /// Takes the Response stream and reads it to completion. It returns a promise that resolves with a string.
+    /// Takes the Response stream and reads it to completion. It returns a promise
+    /// that resolves with a string.
     /// </summary>
     public async Task<string> text()
     {
@@ -41,20 +49,26 @@ public class FetchResponse(HttpResponseMessage responseMessage)
     }
 
     /// <summary>
-    /// Takes the Response stream and reads it to completion. It returns a promise that resolves with the result of parsing the body text as JSON.
+    /// Takes the Response stream and reads it to completion. It returns a promise
+    /// that resolves with the result of parsing the body text as JSON.
     /// </summary>
-    public async Task<object?> json()
+    public async Task<JObject?> json()
     {
         var bodyAsText = await text();
+
         if (string.IsNullOrWhiteSpace(bodyAsText))
         {
             return null;
         }
-        return JsonSerializer.Deserialize<object>(bodyAsText);
+
+        var result = JObject.Parse(bodyAsText);
+
+        return result;
     }
 
     /// <summary>
-    /// Takes the Response stream and reads it to completion. It returns a promise that resolves with a Blob (represented as a byte array in C#).
+    /// Takes the Response stream and reads it to completion. It returns a promise
+    /// that resolves with a Blob (represented as a byte array in C#).
     /// </summary>
     public async Task<byte[]> blob()
     {
@@ -63,8 +77,8 @@ public class FetchResponse(HttpResponseMessage responseMessage)
     }
 
     /// <summary>
-    /// Reads the content from the HttpResponseMessage into a byte array, if not already read.
-    /// This ensures the stream is only read once.
+    /// Reads the content from the HttpResponseMessage into a byte array, if not
+    /// already read.  This ensures the stream is only read once.
     /// </summary>
     private async Task ReadBodyBytesOnceAsync()
     {
