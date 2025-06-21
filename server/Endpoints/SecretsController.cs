@@ -8,10 +8,7 @@ namespace RunJS;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class SecretsController(
-    SecretsDatabase database,
-    SecretsService secretsService
-) : ControllerBase
+public class SecretsController(SecretsService secretsService) : ControllerBase
 {
     /// <summary>
     /// Adds a secret to the backend secret store and returns the ID of the secret.
@@ -19,18 +16,8 @@ public class SecretsController(
     /// <param name="value">The value to add to the secret store; will be encrypted.</param>
     /// <returns>The ID of the secret.</returns>
     [HttpPost("")]
-    public async Task<string> AddSecret([FromBody] string value)
-    {
-        var encryptedValue = secretsService.Encrypt(value);
-
-        var id = $"runjs:secret:{Guid.NewGuid():N}";
-
-        await database.Secrets.AddAsync(
-            new Secret { Id = id, EncryptedValue = encryptedValue }
-        );
-
-        await database.SaveChangesAsync();
-
-        return id;
-    }
+    public async Task<string> AddSecret([FromBody] AddSecretRequest request) =>
+        await secretsService.Store(request.Value);
 }
+
+public record AddSecretRequest(string Value);

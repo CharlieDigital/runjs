@@ -22,6 +22,7 @@ builder.AddCustomLogging();
 builder.Services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
 builder.Services.AddTelemetry(); // OpenTelemetry @ http://localhost:18888
 builder.Services.AddControllers();
+builder.Services.AddScoped<SecretsService>();
 builder.Services.AddSingleton(currentConfig);
 builder.Services.AddDbContext<SecretsDatabase>();
 builder.Services.AddEncryption();

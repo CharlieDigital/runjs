@@ -209,15 +209,26 @@ You may want RunJS to make API calls that require API secrets.  To make this saf
 
 If the payload includes a secret ID, then that secret will be loaded and replaced purely in the backend when the LLM makes the call to RunJS; the secret is never exposed to the LLM.
 
-### Managing the Database Schema
-
-The database is deployed and accessed via EF Core.
+To create a secret:
 
 ```shell
-# To add a migration
+curl -X POST http://localhost:5000/secrets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": "abracadabra"
+  }'
+```
 
-# To deploy the migration
+This will yield a secret ID like this:
 
-# To generate the full script
+```text
+runjs:secret:fc719aab80ac402fa14e36038d948437
+```
 
+To test whether it gets replaced with the actual value in the request, you can set it in the body somewhere (normally, it would just get replaced in the headers).
+
+Then test with the following prompt:
+
+```shell
+npm run app -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "runjs:secret:fc719aab80ac402fa14e36038d948437", "userId": 1 }.  Include the Authorization header with the secret key runjs:secret:fc719aab80ac402fa14e36038d948437.  Return whether the JSON contains the phrase "abracadabra" anywhere in the response.'
 ```

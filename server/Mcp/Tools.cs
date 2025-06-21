@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Jint;
 using ModelContextProtocol.Server;
 using ILogger = Serilog.ILogger;
@@ -32,23 +33,42 @@ public static class JintTool
     [
         McpServerTool(Name = "runJavaScript"),
         Description(
-            "Runs JavaScript code and returns the result."
-                + "Wrap the code statements in an IIFE like so and return a value "
-                + "if needed: (async () => { /* YOUR CODE STATEMENTS HERE */ })(). "
-                + "If you need to access a web API, you can access it via `fetch`. "
-                + "Be sure to handle promises with async/await and call .json() or "
-                + ".text() on the response to get the payload. Be sure to return "
-                + "a value"
+            """
+                Runs JavaScript code and returns the result.
+                Wrap the code statements in an IIFE like so:
+                (async () => { /* YOUR CODE STATEMENTS HERE */ })().
+                The last statement should return a value.
+                If you need to access a web API, you can access it via `fetch`.
+                Be sure to handle promises with async/await
+                Call .json() or .text() on the response to get the payload.
+                If the API call requires a secret header, use a placeholder for the value.
+                The secret placeholder will be in the form `runjs:secret:<GUID>`.
+                Be sure to return a value at the end.
+
+                The user may provide a secret ID for using an API.
+                If present, it will have the format `runjs:secret:<GUID>`.
+                If it is not present, ignore it and the secretId is an empty string.
+                """
         )
     ]
-    public static string RunJavaScriptCode(
+    public static async Task<string> RunJavaScriptCode(
         [Description(
             "The JavaScript code to execute; returns 'void' if there is no result."
         )]
-            string code
+            string code,
+        [Description(
+            "A secret ID to use for fetching API keys if provided by the user."
+        )]
+            string secretId,
+        SecretsService secretsService
     )
     {
         Log.Here().Information("Running JavaScript code: {Code}", code);
+
+        if (!string.IsNullOrWhiteSpace(secretId))
+        {
+            code = code.Replace(secretId, await secretsService.Retrieve(secretId));
+        }
 
         var engine = new Engine(options =>
         {

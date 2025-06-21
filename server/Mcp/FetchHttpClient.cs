@@ -149,6 +149,7 @@ public class FetchHttpClient(Engine engine) : IDisposable
         }
         catch (Exception ex)
         {
+            Log.Here().Error(ex, "Failed to perform HTTP request to {Url}", url);
             throw;
         }
     }

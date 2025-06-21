@@ -11,12 +11,12 @@ public static class SetupEncryptionExtension
             .PersistKeysToFileSystem(new DirectoryInfo("./.keys"))
             .SetApplicationName("runjs-mcp-server");
 
-        services.AddSingleton<SecretsService>(provider =>
+        services.AddSingleton<EncryptionService>(provider =>
         {
             var dataProtectionProvider =
                 provider.GetRequiredService<IDataProtectionProvider>();
             var protector = dataProtectionProvider.CreateProtector("RunJS.Values");
-            return new SecretsService(protector);
+            return new EncryptionService(protector);
         });
     }
 }

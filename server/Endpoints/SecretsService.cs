@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.DataProtection;
 using ILogger = Serilog.ILogger;
 
 namespace RunJS;
@@ -7,58 +6,49 @@ namespace RunJS;
 /// Provides symmetric encryption for storing encrypted values as strings using .NET's built-in data protection.
 /// Uses AES-256-CBC with HMAC-SHA256 for authenticated encryption.
 /// </summary>
-public class SecretsService(IDataProtector dataProtector)
+public class SecretsService(
+    EncryptionService encryptionService,
+    SecretsDatabase secretsDatabase
+)
 {
     private static readonly ILogger Log = Serilog.Log.ForContext<SecretsService>();
 
-    private readonly IDataProtector _protector = dataProtector;
-
     /// <summary>
-    /// Encrypts a plaintext value and returns it as a Base64 encoded string.
+    /// Encrypts a value using the data protection service and stores it in the
+    /// database.
     /// </summary>
-    /// <param name="plaintext">The value to encrypt</param>
-    /// <returns>Base64 encoded encrypted string</returns>
-    /// <exception cref="ArgumentNullException">Thrown when plaintext is null</exception>
-    public string Encrypt(string plaintext)
+    /// <param name="value">The value to encrypt.</param>
+    /// <returns>The ID of the newly created secret prefixed with `runjs:secret:`</returns>
+    public async Task<string> Store(string value)
     {
-        ArgumentNullException.ThrowIfNull(plaintext);
+        var encryptedValue = encryptionService.Encrypt(value);
 
-        try
-        {
-            var encrypted = _protector.Protect(plaintext);
-            return encrypted;
-        }
-        catch (Exception ex)
-        {
-            Log.Here().Error(ex, "Failed to encrypt value");
-            throw;
-        }
+        var id = $"runjs:secret:{Guid.NewGuid():N}";
+
+        await secretsDatabase.Secrets.AddAsync(
+            new Secret { Id = id, EncryptedValue = encryptedValue }
+        );
+
+        await secretsDatabase.SaveChangesAsync();
+
+        return id;
     }
 
     /// <summary>
-    /// Decrypts an encrypted string back to the original plaintext value.
+    /// Retrieves a secret by its ID, decrypting the value before returning it.
     /// </summary>
-    /// <param name="encryptedValue">The encrypted string to decrypt</param>
-    /// <returns>The original plaintext value</returns>
-    /// <exception cref="ArgumentNullException">Thrown when encryptedValue is null</exception>
-    /// <exception cref="CryptographicException">Thrown when decryption fails</exception>
-    public string Decrypt(string encryptedValue)
+    /// <param name="id">The ID of the secret prefixed with `runjs:secret:`</param>
+    /// <returns>The decrypted, plaintext value of the secret.</returns>
+    public async Task<string> Retrieve(string id)
     {
-        ArgumentNullException.ThrowIfNull(encryptedValue);
+        var secret = await secretsDatabase.Secrets.FindAsync(id);
 
-        try
+        if (secret == null)
         {
-            var decrypted = _protector.Unprotect(encryptedValue);
-            return decrypted;
+            Log.Here().Warning("Secret with ID {Id} not found", id);
+            throw new KeyNotFoundException($"Secret with ID {id} not found");
         }
-        catch (Exception ex)
-        {
-            Log.Here()
-                .Error(
-                    ex,
-                    "Failed to decrypt value - data may be corrupted or key is incorrect"
-                );
-            throw;
-        }
+
+        return encryptionService.Decrypt(secret.EncryptedValue);
     }
 }
