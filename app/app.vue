@@ -1,8 +1,8 @@
 <template>
-  <div class="row full-height flex-center">
-    <QCard class="col-lg-7 col-md-9 col-sm-12">
+  <div class="row full-height flex-center q-pa-sm">
+    <QCard class="col-lg-7 col-md-9 col-sm-10 col-xs-12">
       <QCardSection horizontal>
-        <QCardSection class="col-8">
+        <QCardSection class="col-md-8 col-sm-12 col-xs-12">
           <QItem dense>
             <QItemSection>
               <QItemLabel class="text-h6">RunJS Demo App</QItemLabel>
@@ -97,8 +97,8 @@
           </QCardSection>
         </QCardSection>
 
-        <QSeparator vertical />
-        <QCardSection class="col-4 text-caption text-grey-8">
+        <QSeparator vertical class="gt-sm" />
+        <QCardSection class="col-4 text-caption text-grey-8 gt-sm">
           <p v-html="intro" />
         </QCardSection>
       </QCardSection>
