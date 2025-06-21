@@ -13,21 +13,21 @@
             <QInput
               v-model="secretValue"
               label="Secret Value"
-              color="pink"
+              color="deep-purple"
               hint="A secret value (like an API key) that is encrypted and stored securely.  When you click 'Store Secret', the value will be saved and a unique ID will be generated.  Use this ID in your prompt to refer to the secret."
               :type="showSecret ? 'text' : 'password'"
               outlined
             >
               <template #append>
                 <QBtn
-                  color="pink"
+                  color="deep-purple"
                   :icon="showSecret ? tabOutlineEyeOff : tabOutlineEye"
                   @click="showSecret = !showSecret"
                   flat
                   rounded
                 />
                 <QBtn
-                  color="pink"
+                  color="deep-purple"
                   :icon-right="tabOutlineKey"
                   :loading="executing"
                   :disable="secretValue.trim().length < 3"
@@ -49,7 +49,7 @@
               v-model="service"
               :options="services"
               label="Service"
-              color="pink"
+              color="deep-purple"
               hint="Select the service to call.  This will determine the API endpoint and parameters."
               outlined
             />
@@ -72,14 +72,14 @@
               v-model="prompt"
               label="Prompt"
               type="textarea"
-              color="pink"
+              color="deep-purple"
               hint="The prompt to send to the LLM.  Describe your API call that you want to make or the JavaScript code to generate and execute.  Here, you can pass in some JSON data, for example, and ask for a specific value extracted from the payload."
               borderless
             />
           </QCardSection>
           <QCardActions align="right" class="q-pt-none">
             <QBtn
-              color="pink"
+              color="deep-purple"
               class="q-mt-md"
               :icon-right="tabOutlinePlayerPlay"
               :loading="executing"
@@ -97,7 +97,7 @@
               v-model="result"
               input-style="font-family: monospace; font-size: 0.8rem; min-height: 200px"
               type="textarea"
-              color="pink"
+              color="deep-purple"
               hint="The result from the API call"
               readonly
             />
@@ -158,15 +158,17 @@ watch(
   service,
   (svc) => {
     if (svc === "jsonplaceholder") {
-      prompt.value = `Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/
-Create a new post: { "title": "Hello", "body": "runjs:secret:SECRET_GUID_HERE", "userId": 1 }.
-Include the Authorization header with the secret key runjs:secret:SECRET_GUID_HERE.
-Return whether the JSON contains the phrase "abracadabra" anywhere in the response.`;
+      prompt.value =
+        "Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/. " +
+        'Create a new post: { "title": "Hello", "body": "runjs:secret:SECRET_GUID_HERE", "userId": 1 }. ' +
+        "Include the Authorization header with the secret key runjs:secret:SECRET_GUID_HERE. " +
+        'Return whether the JSON contains the phrase "abracadabra" anywhere in the response. ';
     } else {
-      prompt.value = `Generate some JavaScript that will POST to https://httpbin.org/post
-Use the the authorization header with value: runjs:secret:SECRET_GUID_HERE
-Just return the raw response; do not modify it; do not add your commentary.
-Give me the full response directly as text.`;
+      prompt.value =
+        "Generate some JavaScript that will POST to https://httpbin.org/post. " +
+        "Use the the authorization header with value: runjs:secret:SECRET_GUID_HERE " +
+        "Just return the raw response; do not modify it; do not add your commentary. " +
+        "Give me the full response directly as text.";
     }
   },
   { immediate: true }
@@ -250,12 +252,18 @@ const intro = `<p>This is a demo app for RunJS, a tool that allows you to run Ja
 }
 
 code {
+  font-family: "Reddit Mono", monospace;
   background-color: #f5f5f5;
   color: #454545;
   padding: 0.05rem 0.4rem;
   border-radius: 4px;
   white-space: nowrap;
   border: 1px solid #ddd;
+}
+
+textarea {
+  font-family: "Reddit Mono", monospace;
+  font-size: 0.9rem;
 }
 
 ol {

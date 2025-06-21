@@ -1,3 +1,4 @@
 html, body, #__nuxt {
   height: 100%;
+  font-family: "Inter", sans-serif;
 }
