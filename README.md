@@ -169,6 +169,24 @@ npm run app -- "Generate some JavaScript that will GET a post from https://jsonp
 npm run app -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "World!", "userId": 1 }.  Return the id of the post from the result'
 ```
 
+The latter generates and executes the following JavaScript:
+
+```js
+(async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ title: 'Hello', body: 'World!', userId: 1 })
+  });
+  const data = await response.json();
+  return data.id;
+})()
+```
+
+And should return the result `101` as the ID.
+
 ## Observability
 
 If you run the following:
