@@ -98,10 +98,7 @@
         </QCardSection>
 
         <QSeparator vertical />
-        <QCardSection
-          class="col-4 text-caption text-grey-8"
-          style="white-space: pre-line"
-        >
+        <QCardSection class="col-4 text-caption text-grey-8">
           <p v-html="intro" />
         </QCardSection>
       </QCardSection>
@@ -223,19 +220,18 @@ async function executePrompt() {
   }
 }
 
-const intro = `This is a demo app for RunJS, a tool that allows you to run JavaScript code in the browser and make API calls to various services.
-
-To get started:
-
-• Run the database containers by executing <code>docker compose up</code> in the root directory.
-• Run the MCP server by navigating to the <code>/server</code> directory and executing <code>dotnet run</code>.
-• Edit the <code>.env</code> OpenAI API key for the backend
-• To test with the storage of secret values like API keys, enter the value in the "Secret Value" field and click "Store Secret".
-• Select an API service from the dropdown menu to test against and check the documentation to see valid requests.
-
-Then describe the request that you want to make and the data you want to extract from the response in the "Prompt" field.
-
-The app will use the OpenAI API to generate a JavaScript function that makes the API call and extracts the data you want.
+const intro = `<p>This is a demo app for RunJS, a tool that allows you to run JavaScript code in the browser and make API calls to various services.</p>
+<p>To get started:</p>
+<ol>
+<li>Run the database containers by executing <code>docker compose up</code> in the root directory.</li>
+<li>Run the MCP server by navigating to the <code>/server</code> directory and executing <code>dotnet run</code>.</li>
+<li>Edit the <code>.env</code> OpenAI API key for the backend</li>
+<li>To test with the storage of secret values like API keys, enter the value in the <strong>"Secret Value"</strong> field and click <strong>"Store Secret"</strong>.</li>
+<li>Select an API service from the dropdown menu to test against and check the documentation to see valid requests.</li>
+</ol>
+<p>Then describe the request that you want to make and the data you want to extract from the response in the "Prompt" field</p>
+<p>The app will use the OpenAI API to generate a JavaScript function that makes the API call and extracts the data you want.</p>
+<p>The purpose the secret is to demonstrate that we can hide sensitive keys from the LLM and retrieve it when we make the API call in code.  If you use the <code>httpbin</code> service, you should see it in the output.</p>
 `;
 </script>
 
@@ -251,5 +247,13 @@ code {
   border-radius: 4px;
   white-space: nowrap;
   border: 1px solid #ddd;
+}
+
+ol {
+  margin: none;
+}
+
+li {
+  margin-bottom: none;
 }
 </style>
