@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json;
-using Jint;
 using Newtonsoft.Json.Linq;
 using ILogger = Serilog.ILogger;
 
@@ -10,7 +9,7 @@ namespace RunJS;
 /// .NET `HttpClient` implementation that provides a JS `fetch`-like interface.
 /// This will be handed to the Jint Engine to allow it to execute HTTP requests.
 /// </summary>
-public class FetchHttpClient(Engine engine) : IDisposable
+public class FetchHttpClient() : IDisposable
 {
     private static readonly HttpClient _httpClient;
     private static readonly ILogger Log = Serilog.Log.ForContext<FetchHttpClient>();
@@ -145,7 +144,7 @@ public class FetchHttpClient(Engine engine) : IDisposable
                     response.StatusCode
                 );
 
-            return new FetchResponse(response, engine);
+            return new FetchResponse(response);
         }
         catch (Exception ex)
         {

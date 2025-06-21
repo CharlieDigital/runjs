@@ -4,6 +4,11 @@ namespace RunJS;
 
 public static class SetupEncryptionExtension
 {
+    /// <summary>
+    /// Set up the data protection sub-system for secure encryption of the
+    /// secret values stored in the database.
+    /// </summary>
+    /// <param name="services"></param>
     public static void AddEncryption(this IServiceCollection services)
     {
         services

@@ -1,10 +1,5 @@
 using System.Text;
-using System.Text.Json;
 using Jint;
-using Jint.Native;
-using Jint.Native.Json;
-using Jint.Native.Object;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace RunJS;
@@ -13,7 +8,7 @@ namespace RunJS;
 /// Represents the response to a request, mimicking the JavaScript Response object interface.
 /// This is intended to be returned by a fetch-like function to a JavaScript engine.
 /// </summary>
-public class FetchResponse(HttpResponseMessage responseMessage, Engine engine)
+public class FetchResponse(HttpResponseMessage responseMessage)
 {
     private byte[]? _bodyBytes; // Cache for the response body.
 

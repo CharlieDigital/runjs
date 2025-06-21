@@ -10,6 +10,10 @@ namespace RunJS;
 /// </summary>
 public static class SetupLoggingExtension
 {
+    /// <summary>
+    /// Setup logging for Serilog with OpenTelemetry and console output.
+    /// </summary>
+    /// <param name="builder"></param>
     public static void AddCustomLogging(this WebApplicationBuilder builder)
     {
         // Set up logging.

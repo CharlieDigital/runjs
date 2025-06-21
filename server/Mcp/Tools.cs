@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Jint;
 using ModelContextProtocol.Server;
 using ILogger = Serilog.ILogger;
@@ -73,12 +72,12 @@ public static class JintTool
         var engine = new Engine(options =>
         {
             options.LimitMemory(5_000_000); // 5 MB
-            options.TimeoutInterval(TimeSpan.FromSeconds(5));
+            options.TimeoutInterval(TimeSpan.FromSeconds(10));
             options.MaxStatements(500);
             options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
         });
 
-        using var client = new FetchHttpClient(engine);
+        using var client = new FetchHttpClient();
 
         engine.SetValue("fetch", client.Fetch);
 
