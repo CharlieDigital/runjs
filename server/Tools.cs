@@ -52,7 +52,7 @@ public static class JintTool
 
         var engine = new Engine(options =>
         {
-            options.LimitMemory(4_000_000); // 4 MB
+            options.LimitMemory(5_000_000); // 5 MB
             options.TimeoutInterval(TimeSpan.FromSeconds(5));
             options.MaxStatements(500);
             options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;

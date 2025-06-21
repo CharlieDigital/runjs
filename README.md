@@ -1,8 +1,6 @@
 # RunJS - A .NET MCP Server to Run JS Using Jint
 
-This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.
-
-> 👉 HTTP `fetch` is currently not supported; I plan on adding a wrapper for .NET's `HttpClient` (next on my TODO list! Leave suggestions in issues!).  You can use this to process and transform large JSON payloads in tool calls as LLMs are notoriously bad at processing large JSON payloads.
+This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.  It is equipped with a `fetch` analogue implemented using `System.Net.HttpClient` that allows your generated JavaScript to make web requests 😎.
 
 This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
 
@@ -156,6 +154,22 @@ npm run app -- "Generate some JavaScript that will lowercase and return the stri
 # Something more complex"
 npm run app -- 'Generate and execute JavaScript that can parse the following JSON and return the value of the name property: { "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }'
 ```
+
+## Testing Fetch
+
+To test the `fetch` analogue using endpoints from [https://jsonplaceholder.typicode.com/](https://jsonplaceholder.typicode.com/) try the following prompts:
+
+```shell
+cd app
+
+# Test a GET
+npm run app -- "Generate some JavaScript that will GET a post from https://jsonplaceholder.typicode.com/posts/1 and retrieve the name property"
+
+# Test a POST
+npm run app -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "World!", "userId": 1 }.  Return the id of the post from the result'
+```
+
+## Observability
 
 If you run the following:
 
