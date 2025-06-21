@@ -6,3 +6,16 @@ services:
       - "4317:18889"
     environment:
       - DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS="true"
+
+  postgres:
+    image: postgres:17-alpine
+    shm_size: 2g
+    cpu_count: 2
+    user: root
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"

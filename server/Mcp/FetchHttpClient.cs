@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Json;
 using Jint;
 using Newtonsoft.Json.Linq;
-using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace RunJS;
 

@@ -8,9 +8,16 @@ namespace RunJS;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class SecretsController : ControllerBase
+public class SecretsController(SecretsDatabase database) : ControllerBase
 {
-    [HttpGet("{secretId}")]
-    public string GetSecret(string secretId) =>
-        $"It's supposed to be a secret! {secretId}";
+    /// <summary>
+    /// Adds a secret to the backend secret store.
+    /// </summary>
+    /// <param name="value">The value to add to the secret store; will be encrypted.</param>
+    /// <returns>The ID of the secret.</returns>
+    [HttpPost("")]
+    public async Task<string> AddSecret([FromBody] string value)
+    {
+        return await Task.FromResult("");
+    }
 }

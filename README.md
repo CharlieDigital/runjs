@@ -67,9 +67,13 @@ The project is set up in the following structure:
   .env                        # 👈 Make your own from the .env.sample
   .env.sample                 # Sample .envfile; make a copy as .env
 📁 server
+  📁 Endpoints                # .NET Web API endpoints to register and manage
+                                secrets which can be used by the HTTP client
+  📁 Mcp                      # The MCP related artifacts
   Program.cs                  # A .NET MCP server exposing the Jint tool
 builder-server.sh             # Simple script (command) to build the container
-docker-compose.yaml           # Start the Aspire Dashboard container for OTEL
+docker-compose.yaml           # Start the Aspire Dashboard container for OTEL and
+                                a Postgres server for holding secrets.
 Dockerfile                    # Dockerfile for the .NET server app
 ```
 
@@ -196,3 +200,24 @@ docker compose up
 ```
 
 You will also get the [Aspire Dashboard](https://aspiredashboard.com/) at [http://localhost:18888](http://localhost:18888) to trace the internal calls to the tools.
+
+---
+
+## Secrets
+
+You may want RunJS to make API calls that require API secrets.  To make this safer so that you don't have to pass your API keys to the LLM, the MCP server includes a web API endpoint that lets you register "secrets".  You'll get an ID back for the secret that can then be exchanged and injected at runtime for the actual API key.  To make this work, simply make a normal REST call to first register your secrets and then use the ID that's returned instead of the actual secret.
+
+If the payload includes a secret ID, then that secret will be loaded and replaced purely in the backend when the LLM makes the call to RunJS; the secret is never exposed to the LLM.
+
+### Managing the Database Schema
+
+The database is deployed and accessed via EF Core.
+
+```shell
+# To add a migration
+
+# To deploy the migration
+
+# To generate the full script
+
+```

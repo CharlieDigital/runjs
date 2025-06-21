@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RunJS;
@@ -24,15 +25,16 @@ builder.AddCustomLogging();
 builder.Services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
 builder.Services.AddTelemetry(); // OpenTelemetry @ http://localhost:18888
 builder.Services.AddControllers();
-builder.Services.AddSingleton(new DbConfig(""));
-builder.Services.AddDbContext<Database>();
+builder.Services.AddSingleton(currentConfig);
+builder.Services.AddDbContext<SecretsDatabase>();
 
 // Build and start app
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
-var db = scope.ServiceProvider.GetService<Database>()!;
+var db = scope.ServiceProvider.GetService<SecretsDatabase>()!;
 db.Database.EnsureCreated();
+db.Database.Migrate(); // 👈 Migrate the database if needed
 
 app.MapControllers(); // 👈 Web API endpoints for secrets
 app.MapMcp(); // 👈 MCP /sse endpointS
