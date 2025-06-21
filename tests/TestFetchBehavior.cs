@@ -9,9 +9,7 @@ public class TestFetchBehavior
     [Fact]
     public async Task Can_Get_With_Client()
     {
-        var engine = new Engine();
-
-        using var client = new FetchHttpClient(engine);
+        using var client = new FetchHttpClient();
         var url = "https://jsonplaceholder.typicode.com/posts/1";
 
         var response = await client.Fetch(url);
@@ -31,9 +29,7 @@ public class TestFetchBehavior
     [Fact]
     public async Task Can_Post_With_Client()
     {
-        var engine = new Engine();
-
-        using var client = new FetchHttpClient(engine);
+        using var client = new FetchHttpClient();
         var url = "https://jsonplaceholder.typicode.com/posts";
 
         var payload = JObject.FromObject(
@@ -77,7 +73,7 @@ public class TestFetchBehavior
         var engine = new Engine();
 
         // Register the FetchHttpClient in Jint
-        using var client = new FetchHttpClient(engine);
+        using var client = new FetchHttpClient();
         engine.SetValue("fetch", client.Fetch);
 
         var script = """
@@ -105,7 +101,7 @@ public class TestFetchBehavior
         });
 
         // Register the FetchHttpClient in Jint
-        using var client = new FetchHttpClient(engine);
+        using var client = new FetchHttpClient();
         engine.SetValue("fetch", client.Fetch);
 
         var messages = new List<string>();
@@ -145,7 +141,7 @@ public class TestFetchBehavior
         });
 
         // Register the FetchHttpClient in Jint
-        using var client = new FetchHttpClient(engine);
+        using var client = new FetchHttpClient();
         engine.SetValue("fetch", client.Fetch);
 
         var script = """
