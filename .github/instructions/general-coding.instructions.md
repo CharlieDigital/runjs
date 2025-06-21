@@ -21,6 +21,7 @@ applyTo: "**"
 ## Structure
 - The /app directory contains a sample client application built with TypeScript and the Vercel AI SDK
 - The /server directory contains the C# MCP server implementation
+- The /tests directory contains integration tests using XUnit
 
 ## Key Files
 

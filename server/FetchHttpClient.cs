@@ -1,5 +1,7 @@
 using System.Text;
+using System.Text.Json;
 using Jint;
+using Newtonsoft.Json.Linq;
 using Serilog;
 
 namespace RunJS;
@@ -20,7 +22,12 @@ public class FetchHttpClient(Engine engine) : IDisposable
         var handler = new HttpClientHandler
         {
             // Allow self-signed certificates for testing purposes.
-            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+            ServerCertificateCustomValidationCallback = (
+                message,
+                cert,
+                chain,
+                errors
+            ) => true
         };
 
         _httpClient = new HttpClient(handler);
@@ -32,9 +39,16 @@ public class FetchHttpClient(Engine engine) : IDisposable
     /// <param name="url">The URL for the request.</param>
     /// <param name="options">Request options object containing method, body, headers, etc. Can be null for GET requests.</param>
     /// <returns>A `Task` that resolves to a `FetchResponse` object.</returns>
-    public async Task<FetchResponse> Fetch(string url, dynamic? options = null)
+    public async Task<FetchResponse> Fetch(string url, dynamic? opt = null)
     {
         // Extract method from options, default to GET
+        var options = opt switch
+        {
+            null => null,
+            JObject jObject when opt is JObject => jObject,
+            _ => JObject.Parse(JsonSerializer.Serialize(opt))
+        };
+
         var method = options?.method?.ToString() ?? "GET";
         var request = new HttpRequestMessage(new HttpMethod(method), url);
 
@@ -66,7 +80,10 @@ public class FetchHttpClient(Engine engine) : IDisposable
                 catch (Exception ex)
                 {
                     Log.Here()
-                        .Warning(ex, "Failed to parse Content-Type from headers, using default");
+                        .Warning(
+                            ex,
+                            "Failed to parse Content-Type from headers, using default"
+                        );
                 }
             }
 
@@ -99,7 +116,10 @@ public class FetchHttpClient(Engine engine) : IDisposable
                             continue;
                         }
 
-                        request.Headers.TryAddWithoutValidation(headerName, headerValue);
+                        request.Headers.TryAddWithoutValidation(
+                            headerName,
+                            headerValue
+                        );
                     }
                 }
             }
@@ -120,7 +140,10 @@ public class FetchHttpClient(Engine engine) : IDisposable
             // We don't call `EnsureSuccessStatusCode()` because the JS fetch API doesn't throw on HTTP error statuses.
             // Instead, it returns a response with `ok` set to `false`. The `FetchResponse` class handles this.
             Log.Here()
-                .Information("Request completed with status {StatusCode}", response.StatusCode);
+                .Information(
+                    "Request completed with status {StatusCode}",
+                    response.StatusCode
+                );
 
             return new FetchResponse(response, engine);
         }
