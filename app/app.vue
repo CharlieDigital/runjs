@@ -5,9 +5,35 @@
         <QCardSection class="col-md-8 col-sm-12 col-xs-12">
           <QItem dense>
             <QItemSection>
-              <QItemLabel class="text-h6">RunJS Demo App</QItemLabel>
+              <QItemLabel class="text-h6 text-deep-purple text-bold"
+                >RunJS MCP Server Demo App</QItemLabel
+              >
             </QItemSection>
           </QItem>
+          <QCardSection>
+            <QSelect
+              v-model="service"
+              :options="services"
+              label="Service"
+              color="deep-purple"
+              hint="Select the service to call.  This will determine the API endpoint and parameters."
+              outlined
+            />
+          </QCardSection>
+
+          <QItem>
+            <QItemSection>
+              <QItemLabel class="text-body2 text-bold">HTTP Test Service</QItemLabel>
+              <QItemLabel class="q-py-xs"
+                ><a :href="serviceUrl" target="_blank" class="text-body2">{{
+                  serviceUrl
+                }}</a></QItemLabel
+              >
+              <QItemLabel caption>Click the link to see docs on this endpoint</QItemLabel>
+            </QItemSection>
+          </QItem>
+
+          <QSeparator spaced="md" />
 
           <QCardSection>
             <QInput
@@ -41,32 +67,18 @@
             </QInput>
           </QCardSection>
           <QCardSection>
-            <code>{{ secretId }}</code>
+            <QChip
+              style="font-family: 'Reddit Mono', monospace"
+              :icon="copied ? tabOutlineClipboardCheck : tabOutlineClipboardCopy"
+              :color="copied ? 'light-green-6' : 'deep-purple'"
+              @click="copy(secretId)"
+              outline
+              clickable
+              >{{ copied ? "Copied to clipboard" : secretId }}</QChip
+            >
           </QCardSection>
           <QSeparator spaced="md" />
-          <QCardSection>
-            <QSelect
-              v-model="service"
-              :options="services"
-              label="Service"
-              color="deep-purple"
-              hint="Select the service to call.  This will determine the API endpoint and parameters."
-              outlined
-            />
-          </QCardSection>
 
-          <QItem>
-            <QItemSection>
-              <QItemLabel class="text-body2 text-bold">HTTP Test Service</QItemLabel>
-              <QItemLabel class="q-py-xs"
-                ><a :href="serviceUrl" target="_blank" class="text-body2">{{
-                  serviceUrl
-                }}</a></QItemLabel
-              >
-              <QItemLabel caption>Click the link to see docs on this endpoint</QItemLabel>
-            </QItemSection>
-          </QItem>
-          <QSeparator spaced="md" />
           <QCardSection>
             <QInput
               v-model="prompt"
@@ -105,8 +117,47 @@
         </QCardSection>
 
         <QSeparator vertical class="gt-sm" />
-        <QCardSection class="col-4 text-caption text-grey-8 gt-sm">
-          <p v-html="intro" />
+        <QCardSection class="col-4 text-body2 text-grey-8 gt-sm">
+          <p>
+            This is a demo app for RunJS, an MCP server that lets LLMs generate and
+            execute JavaScript securely in a .NET runtime using the
+            <strong>Jint</strong> C# JavaScript interpreter.
+          </p>
+          <p>To get started:</p>
+          <ol>
+            <li>
+              Run the database containers by executing <code>docker compose up</code> in
+              the root directory.
+            </li>
+            <li>
+              Run the MCP server by navigating to the <code>/server</code> directory and
+              executing <code>dotnet run</code>.
+            </li>
+            <li>Edit the <code>.env</code> OpenAI API key for the backend</li>
+            <li>
+              To test with the storage of secret values like API keys, enter the value in
+              the <strong>"Secret Value"</strong> field and click
+              <strong>"Store Secret"</strong>.
+            </li>
+            <li>
+              Select an API service from the dropdown menu to test against and check the
+              documentation to see valid requests.
+            </li>
+          </ol>
+          <p>
+            Then describe the request that you want to make and the data you want to
+            extract from the response in the <strong>"Prompt"</strong> field
+          </p>
+          <p>
+            The app will use the OpenAI API to generate a JavaScript function that makes
+            the API call and extracts the data you want. That JavaScript is passed to the
+            RunJS MCP server to execute.
+          </p>
+          <p>
+            The purpose the secret is to demonstrate that we can hide sensitive keys from
+            the LLM and retrieve it when we make the API call in code. If you use the
+            <code>httpbin</code> service, you should see it in the output.
+          </p>
         </QCardSection>
       </QCardSection>
     </QCard>
@@ -116,6 +167,8 @@
 <script setup lang="ts">
 import { Notify } from "quasar";
 import {
+  tabOutlineClipboardCheck,
+  tabOutlineClipboardCopy,
   tabOutlineEye,
   tabOutlineEyeOff,
   tabOutlineKey,
@@ -130,6 +183,8 @@ const result = ref("");
 const services = ref(["jsonplaceholder", "httpbin"]);
 const service = ref("httpbin");
 const executing = ref(false);
+
+const { copied, copy } = useClipboard();
 
 const serviceUrl = computed(() => {
   switch (service.value) {
@@ -230,20 +285,6 @@ async function executePrompt() {
     executing.value = false;
   }
 }
-
-const intro = `<p>This is a demo app for RunJS, a tool that allows you to run JavaScript code in the browser and make API calls to various services.</p>
-<p>To get started:</p>
-<ol>
-<li>Run the database containers by executing <code>docker compose up</code> in the root directory.</li>
-<li>Run the MCP server by navigating to the <code>/server</code> directory and executing <code>dotnet run</code>.</li>
-<li>Edit the <code>.env</code> OpenAI API key for the backend</li>
-<li>To test with the storage of secret values like API keys, enter the value in the <strong>"Secret Value"</strong> field and click <strong>"Store Secret"</strong>.</li>
-<li>Select an API service from the dropdown menu to test against and check the documentation to see valid requests.</li>
-</ol>
-<p>Then describe the request that you want to make and the data you want to extract from the response in the "Prompt" field</p>
-<p>The app will use the OpenAI API to generate a JavaScript function that makes the API call and extracts the data you want.</p>
-<p>The purpose the secret is to demonstrate that we can hide sensitive keys from the LLM and retrieve it when we make the API call in code.  If you use the <code>httpbin</code> service, you should see it in the output.</p>
-`;
 </script>
 
 <style>
