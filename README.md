@@ -62,8 +62,9 @@ And use the RunJS MCP server to execute it 🚀
 The project is set up in the following structure:
 
 ```text
-📁 cli
-  📁 src                      # A sample client application using Vercel AI SDK
+📁 app                        # A sample Nuxt web app to make it easier to test
+📁 cli                        # A sample client application using Vercel AI SDK
+  📁 src
   .env                        # 👈 Make your own from the .env.sample
   .env.sample                 # Sample .envfile; make a copy as .env
 📁 server

@@ -62,7 +62,12 @@ public static class JintTool
         SecretsService secretsService
     )
     {
-        Log.Here().Information("Running JavaScript code: {Code}", code);
+        Log.Here()
+            .Information(
+                "Running JavaScript code: {Code}\n\n With secret ID: {SecretId}",
+                code,
+                secretId
+            );
 
         if (!string.IsNullOrWhiteSpace(secretId))
         {

@@ -20,7 +20,8 @@ applyTo: "**"
 - When mentioning types, class names, etc in comments, use markdown backticks like `this` or `MyClass`
 
 ## Structure
-- The /app directory contains a sample client application built with TypeScript and the Vercel AI SDK
+- The /app directory is a Nuxt 3 Vue web application which is using Quasar for the UI components
+- The /cli directory contains a sample client application built with TypeScript and the Vercel AI SDK
 - The /server directory contains the C# MCP server implementation
 - The /tests directory contains integration tests using XUnit
 
