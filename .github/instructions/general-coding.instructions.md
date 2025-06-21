@@ -11,6 +11,7 @@ applyTo: "**"
 ## Coding Style
 - Prefer modern .NET conventions like primary constructors, inline arrays, var, record types, etc.
 - Always use braces { } for control structures (if, for, while, etc.); do not leave them out even for single line statements
+- When writing tests, use test function names like `MethodName_StateUnderTest_ExpectedBehavior` to clearly describe the test's purpose
 
 ## Commenting
 - Add comments to explain logical decision

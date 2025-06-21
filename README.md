@@ -62,7 +62,7 @@ And use the RunJS MCP server to execute it 🚀
 The project is set up in the following structure:
 
 ```text
-📁 app
+📁 cli
   📁 src                      # A sample client application using Vercel AI SDK
   .env                        # 👈 Make your own from the .env.sample
   .env.sample                 # Sample .envfile; make a copy as .env
@@ -79,7 +79,7 @@ The project is set up in the following structure:
 builder-server.sh             # Simple script (command) to build the container
 docker-compose.yaml           # Start the Aspire Dashboard container for OTEL and
                                 a Postgres server for holding secrets.
-Dockerfile                    # Dockerfile for the .NET server app
+Dockerfile                    # Dockerfile for the .NET server cli
 ```
 
 ## Configuring Your Local Environment
@@ -105,19 +105,19 @@ OPENAI_API_KEY=sk-proj-kSZWV-M7.......K_MMv8JZRmIA
 MCP_ENDPOINT=https://mhjt5hqd-5000.use.devtunnels.ms/sse
 ```
 
-If you are only using a local call (like the `/app` directory):
+If you are only using a local call (like the `/cli` directory):
 
 ```text
 OPENAI_API_KEY=sk-proj-kSZWV-M7.......K_MMv8JZRmIA
 MCP_ENDPOINT=http://localhost:5000/sse
 ```
 
-From the `/app` directory, run the following:
+From the `/cli` directory, run the following:
 
 ```shell
-cd app
+cd cli
 npm i
-npm run app -- "Use your echo tool with my name: <YOUR_NAME_HERE>; write out your response"
+npm run cli -- "Use your echo tool with my name: <YOUR_NAME_HERE>; write out your response"
 ```
 
 This should invoke the .NET MCP endpoint and output your name!
@@ -145,23 +145,23 @@ dotnet watch run --project server --non-interactive
 ## Running the Client
 
 ```shell
-cd app
-npm run app -- "My prompt goes here"
+cd cli
+npm run cli -- "My prompt goes here"
 ```
 
 To test this, you can run two types of prompts:
 
 ```shell
-cd app
+cd cli
 
 # Just test the echo
-npm run app -- "Echo my name back to me: Charles"
+npm run cli -- "Echo my name back to me: Charles"
 
 # Generate and execute JavaScript
-npm run app -- "Generate some JavaScript that will lowercase and return the string 'Hello, World' and execute it.  Give me the results; ONLY THE RESULTS"
+npm run cli -- "Generate some JavaScript that will lowercase and return the string 'Hello, World' and execute it.  Give me the results; ONLY THE RESULTS"
 
 # Something more complex"
-npm run app -- 'Generate and execute JavaScript that can parse the following JSON and return the value of the name property: { "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }'
+npm run cli -- 'Generate and execute JavaScript that can parse the following JSON and return the value of the name property: { "id": 12345, "name": "Charles Chen", "handle": "chrlschn" }'
 ```
 
 ## Testing Fetch
@@ -169,13 +169,13 @@ npm run app -- 'Generate and execute JavaScript that can parse the following JSO
 To test the `fetch` analogue using endpoints from [https://jsonplaceholder.typicode.com/](https://jsonplaceholder.typicode.com/) try the following prompts:
 
 ```shell
-cd app
+cd cli
 
 # Test a GET
-npm run app -- "Generate some JavaScript that will GET a post from https://jsonplaceholder.typicode.com/posts/1 and retrieve the name property"
+npm run cli -- "Generate some JavaScript that will GET a post from https://jsonplaceholder.typicode.com/posts/1 and retrieve the name property"
 
 # Test a POST
-npm run app -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "World!", "userId": 1 }.  Return the id of the post from the result'
+npm run cli -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "World!", "userId": 1 }.  Return the id of the post from the result'
 ```
 
 The latter generates and executes the following JavaScript:
@@ -235,5 +235,5 @@ To test whether it gets replaced with the actual value in the request, you can s
 Then test with the following prompt:
 
 ```shell
-npm run app -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "runjs:secret:fc719aab80ac402fa14e36038d948437", "userId": 1 }.  Include the Authorization header with the secret key runjs:secret:fc719aab80ac402fa14e36038d948437.  Return whether the JSON contains the phrase "abracadabra" anywhere in the response.'
+npm run cli -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "runjs:secret:fc719aab80ac402fa14e36038d948437", "userId": 1 }.  Include the Authorization header with the secret key runjs:secret:fc719aab80ac402fa14e36038d948437.  Return whether the JSON contains the phrase "abracadabra" anywhere in the response.'
 ```
