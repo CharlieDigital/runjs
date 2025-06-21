@@ -66,7 +66,7 @@
               label="Prompt"
               type="textarea"
               color="pink"
-              hint="The prompt to send to the LLM.  Describe your API call that you want to make."
+              hint="The prompt to send to the LLM.  Describe your API call that you want to make or the JavaScript code to generate and execute.  Here, you can pass in some JSON data, for example, and ask for a specific value extracted from the payload."
               borderless
             />
           </QCardSection>
@@ -155,9 +155,8 @@ Return whether the JSON contains the phrase "abracadabra" anywhere in the respon
     } else {
       prompt.value = `Generate some JavaScript that will POST to https://httpbin.org/post
 Use the the authorization header with value: runjs:secret:SECRET_GUID_HERE
-Just return the raw response; do not modify it; do not add your commentary.;
-DO NOT MODIFY THE RESPONSE AND REPLACE THE SECRET.
-Just give me the response from the tool directly as text.`;
+Just return the raw response; do not modify it; do not add your commentary.
+Give me the full response directly as text.`;
     }
   },
   { immediate: true }
