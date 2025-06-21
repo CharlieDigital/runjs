@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
 using RunJS;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load the configuration.
-builder.Services.Configure<DbConfig>(
-    builder.Configuration.GetSection(nameof(DbConfig))
+builder.Services.Configure<AppConfig>(
+    builder.Configuration.GetSection(nameof(AppConfig))
 );
 
 var currentConfig = builder
-    .Configuration.GetSection(nameof(DbConfig))
-    .Get<DbConfig>();
+    .Configuration.GetSection(nameof(AppConfig))
+    .Get<AppConfig>();
 
 if (currentConfig == null)
 {
@@ -27,6 +24,7 @@ builder.Services.AddTelemetry(); // OpenTelemetry @ http://localhost:18888
 builder.Services.AddControllers();
 builder.Services.AddSingleton(currentConfig);
 builder.Services.AddDbContext<SecretsDatabase>();
+builder.Services.AddEncryption();
 
 // Build and start app
 var app = builder.Build();

@@ -486,3 +486,5 @@ $RECYCLE.BIN/
 dist/
 node_modules/
 *.env
+
+.keys/

@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using Jint;
 using ModelContextProtocol.Server;
-using Serilog;
 using ILogger = Serilog.ILogger;
 
 namespace RunJS;

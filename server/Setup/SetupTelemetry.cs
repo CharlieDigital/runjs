@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -24,7 +23,9 @@ public static class SetupTelemetryExtension
                     .ConfigureResource(r => r.AddService("runjs:server:http"))
             )
             .WithMetrics(b =>
-                b.AddMeter("*").AddAspNetCoreInstrumentation().AddHttpClientInstrumentation()
+                b.AddMeter("*")
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
             )
             .WithLogging()
             .UseOtlpExporter();
