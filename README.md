@@ -1,6 +1,6 @@
 # RunJS - A .NET MCP Server to Run JS Using Jint
 
-This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.  It is equipped with a `fetch` analogue implemented using `System.Net.HttpClient` that allows your generated JavaScript to make web requests 😎.
+This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.  It is equipped with a `fetch` analogue implemented using `System.Net.HttpClient` that allows your generated JavaScript to make web requests 😎.  A web API is also provided to store secrets securely so that API calls using API keys can be used.
 
 This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
 
@@ -67,10 +67,15 @@ The project is set up in the following structure:
   .env                        # 👈 Make your own from the .env.sample
   .env.sample                 # Sample .envfile; make a copy as .env
 📁 server
+  📁 Data                     # Database artifacts for Secrets
   📁 Endpoints                # .NET Web API endpoints to register and manage
                                 secrets which can be used by the HTTP client
   📁 Mcp                      # The MCP related artifacts
+  📁 Migrations               # Migrations for the EF Core database
+  📁 Setup                    # DI container setup
   Program.cs                  # A .NET MCP server exposing the Jint tool
+📁 tests                      # Small suite of integration tests for HTTP API
+                                calls and for the database access
 builder-server.sh             # Simple script (command) to build the container
 docker-compose.yaml           # Start the Aspire Dashboard container for OTEL and
                                 a Postgres server for holding secrets.
