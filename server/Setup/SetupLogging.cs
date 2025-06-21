@@ -21,19 +21,40 @@ public static class SetupLoggingExtension
         if (builder.Environment.IsDevelopment())
         {
             logConfiguration
-                .WriteTo.Console(outputTemplate: LoggingConstants.DevelopmentTemplate)
+                .WriteTo.Console(
+                    outputTemplate: LoggingConstants.DevelopmentTemplate
+                )
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.ResourceAttributes = new Dictionary<string, object>
+                    {
+                        ["service.name"] = "runjs:server",
+                    };
+                })
                 .MinimumLevel.Debug();
         }
         else
         {
             logConfiguration
-                .WriteTo.Console(outputTemplate: LoggingConstants.ProductionTemplate)
+                .WriteTo.Console(
+                    outputTemplate: LoggingConstants.ProductionTemplate
+                )
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.ResourceAttributes = new Dictionary<string, object>
+                    {
+                        ["service.name"] = "runjs",
+                    };
+                })
                 .MinimumLevel.Debug();
         }
 
         logConfiguration
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information);
+            .MinimumLevel.Override(
+                "Microsoft.Hosting.Lifetime",
+                LogEventLevel.Information
+            );
 
         Log.Logger = logConfiguration.CreateLogger();
 
