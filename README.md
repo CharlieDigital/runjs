@@ -19,7 +19,7 @@ This project contains an MCP server that can execute JavaScript in an isolated s
 
 This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
 
-[![Quick intro of the RunJS MCP server](https://github.com/user-attachments/assets/4559a5d1-a3b7-4552-b646-6271c1525ebb)](https://youtu.be/S3NNgr1wMVI)
+[![Quick intro of the RunJS MCP server](https://github.com/user-attachments/assets/643b2766-a7bf-4f27-be28-21ab1f3c4041)](https://youtu.be/S3NNgr1wMVI)
 
 The RunJS MCP server uses [Jint](https://github.com/sebastienros/jint) -- a C# library that embeds a JavaScript runtime into .NET and allows controlling the execution sandbox by specifying:
 
