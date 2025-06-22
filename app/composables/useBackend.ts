@@ -26,15 +26,15 @@ export function useBackend() {
 
       if (svc === "jsonplaceholder") {
         promptText =
-          "Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/. " +
+          "Generate and execute some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/. " +
           'Create a new post: { "title": "Hello", "body": "runjs:secret:SECRET_GUID_HERE", "userId": 1 }. ' +
           'Return an object that contains the result payload as well as whether the phrase "abracadabra" exists anywhere in the result (case insensitive).  JSON.stringify the final output.';
       } else {
         promptText =
-          "Generate some JavaScript that will POST to https://httpbin.org/post. " +
+          "Generate and execute some JavaScript that will POST to https://httpbin.org/post. " +
           "Use the the authorization header with value: runjs:secret:SECRET_GUID_HERE " +
-          "Just return the raw response; do not modify it; do not add your commentary. " +
-          "Give me the full response directly as text.";
+          "Just return the raw response; do not add your commentary. " +
+          "Give me the full response directly as text. DO NOT MODIFY THE OUTPUT FROM THE TOOL!";
       }
 
       prompt.value =

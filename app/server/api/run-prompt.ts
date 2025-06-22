@@ -59,8 +59,9 @@ You may need to make an API call or write some JavaScript code to process data.
 - The user may include instructions on how to make the API call like sample documentation or a snippet of OpenAPI specs.
 - Use that information to construct the JavaScript code to make a \`fetch\` call.
 - The user may include an API key in the form \`runjs:secret:<GUID>\`; this is the secretId for the tool.
-- If the user provides a secretId, you need to supply it to the tool.
+- If the user provides a secretId, DO NOT MODIFY IT.
 - You are allowed to write async/await code as necessary to handle Promises; prefer async/await syntax!
+- You can use jsonpath-plus to extract data if the user provides an example and asks to extract data; use it like this: JSONPath.JSONPath({path: '<JSON_PATH_QUERY_HERE>', json: <JSON_OBJECT>});
 - Write clean, concise, and efficient JavaScript code.
 - Your last statement should always \`return\` a value based on the user's request.
 `,

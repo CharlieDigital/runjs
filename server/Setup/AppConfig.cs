@@ -9,5 +9,5 @@ public record SecretsConfig(bool UseDatabase = false);
 public record JintConfig(
     int LimitMemory = 5_000_000,
     int TimeoutIntervalSeconds = 10,
-    int MaxStatements = 100
+    int MaxStatements = 1000
 );

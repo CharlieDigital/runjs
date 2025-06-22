@@ -83,6 +83,34 @@ public class TestJintBehavior
         Assert.Equal("Hello, World!", result);
     }
 
+    [Fact]
+    public void Can_Handle_Async_Json_Parse_As_JS_From_Object_With_JsonPath()
+    {
+        var path = Path.Join(Directory.GetCurrentDirectory(), "Mcp/libs");
+
+        var engine = new Engine(options => options.EnableModules(path));
+
+        engine.Modules.Import("./jsonpath-plus.browser-esm.min.js");
+
+        var script = """
+            (async () => {
+                const records = [
+                    { id: 1, text: "Hello, Earth!" },
+                    { id: 2, text: "Hello, Mars!" }
+                ]
+
+                const result = JSONPath.JSONPath({path: '$..text', json: records});
+
+                return JSON.stringify(result);
+            })()
+            """;
+
+        var result = engine.Evaluate(script).UnwrapIfPromise();
+
+        Assert.NotNull(result);
+        Assert.Contains("Hello, Earth!", result.ToString());
+    }
+
     class Fetcher
     {
         public async Task<Response> FetchAsync()
@@ -96,8 +124,10 @@ public class TestJintBehavior
         public async Task<JObject> json()
         {
             return (
-                Task.FromResult(JObject.Parse("""{ "text": "Hello, World!" }"""))
-            ).Result;
+                await Task.FromResult(
+                    JObject.Parse("""{ "text": "Hello, World!" }""")
+                )
+            );
         }
     }
 }

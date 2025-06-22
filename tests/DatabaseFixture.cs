@@ -34,7 +34,11 @@ public class DatabaseFixture
 
     public static SecretsDatabase CreateDbContext()
     {
-        var appConfig = new AppConfig(new DbConfig(_connectionString));
+        var appConfig = new AppConfig(
+            new DbConfig(_connectionString),
+            new JintConfig(),
+            new SecretsConfig()
+        );
 
         return new SecretsDatabase(appConfig);
     }

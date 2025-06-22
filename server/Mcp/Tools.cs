@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using Jint;
 using ModelContextProtocol.Server;
 using ILogger = Serilog.ILogger;
@@ -25,7 +26,7 @@ public static class EchoTool
 }
 
 [McpServerToolType]
-public static class JintTool
+public static partial class JintTool
 {
     private static readonly ILogger Log = Serilog.Log.ForContext(typeof(JintTool));
 
@@ -40,9 +41,9 @@ public static class JintTool
                 Call .json() or .text() on the response to get the payload.
                 Be sure to handle promises with async/await syntax!
 
-                The user may provide a secret ID for using an API or to be replaced in the script.
-                If the API call requires a secret header, the placeholder will be in the form: runjs:secret:<GUID>.
-                If it is not present, ignore it and the secretId is an empty string.
+                You may also use jsonpath-plus library to query to extract values using JSONPath.
+                You should use the JSONPath like this: JSONPath.JSONPath({path: '<JSON_PATH_QUERY_HERE>', json: <JSON_OBJECT>});
+                If the code uses JSONPath queries, then `hasJsonPathQuery` should be set to true so that the library is loaded.
                 """
         )
     ]
@@ -51,23 +52,24 @@ public static class JintTool
             "The JavaScript code to execute; returns 'void' if there is no result."
         )]
             string code,
-        [Description(
-            "A secret ID in the form of `runjs:secret:<GUID>` if present anywhere."
-        )]
-            string secretId,
+        [Description("If true, the code will be executed with a JSONPath query.")]
+            bool hasJsonPathQuery,
         ISecretsService secretsService,
         AppConfig appConfig
     )
     {
+        var secretIds = ExtractAllSecretIds(code).ToList();
+
         Log.Here()
             .Information(
-                "Running JavaScript code: {Code}\n\n With secret ID: {SecretId}",
+                "Running JavaScript code: {Code}\n\n  ⮑  With secret IDs 🔑: {SecretIds}",
                 code,
-                secretId
+                secretIds
             );
 
-        if (!string.IsNullOrWhiteSpace(secretId))
+        foreach (var secretId in secretIds)
         {
+            // TODO: Optimize this if there are many secret IDs
             code = code.Replace(secretId, await secretsService.Retrieve(secretId));
         }
 
@@ -79,11 +81,29 @@ public static class JintTool
             );
             options.MaxStatements(appConfig.Jint.MaxStatements);
             options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
+
+            if (hasJsonPathQuery)
+            {
+                options.EnableModules(
+                    Path.Join(Directory.GetCurrentDirectory(), "Mcp/libs")
+                );
+            }
         });
 
         using var client = new FetchHttpClient();
 
         engine.SetValue("fetch", client.Fetch);
+
+        if (hasJsonPathQuery)
+        {
+            // Register the JSONPath library if needed
+            engine.Modules.Import("./jsonpath-plus.browser-esm.min.js");
+        }
+
+        if (hasJsonPathQuery)
+        {
+            // TODO: Load the library
+        }
 
         var result = engine.Evaluate(code).UnwrapIfPromise();
 
@@ -91,5 +111,34 @@ public static class JintTool
             .Information("  ⮑  Executed JavaScript code, result: {Result}", result);
 
         return result?.ToString() ?? "void";
+    }
+
+    /// <summary>
+    /// Regular expression to match secret IDs in the format `runjs:secret:<GUID_N_FORMAT>`
+    /// where GUID is 32 alphanumeric characters without dashes
+    /// </summary>
+    [GeneratedRegex(@"runjs:secret:\w{32}", RegexOptions.Compiled)]
+    private static partial Regex SecretIdRegex();
+
+    /// <summary>
+    /// Extracts all secret IDs from the provided code string
+    /// </summary>
+    /// <param name="code">The code string to search for secret IDs</param>
+    /// <returns>Collection of all secret IDs found</returns>
+    public static IEnumerable<string> ExtractAllSecretIds(string code)
+    {
+        if (string.IsNullOrEmpty(code))
+        {
+            Log.Here()
+                .Debug("Code string is null or empty, no secret IDs to extract");
+            return [];
+        }
+
+        var matches = SecretIdRegex().Matches(code);
+        var secretIds = matches.Select(m => m.Value).ToList();
+
+        Log.Here().Debug("Found {Count} secret IDs in code", secretIds.Count);
+
+        return secretIds;
     }
 }
