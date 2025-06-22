@@ -233,10 +233,19 @@ If the payload includes a secret ID, then that secret will be loaded and replace
 To create a secret:
 
 ```shell
+# A persistent secret
 curl -X POST http://localhost:5000/secrets \
   -H "Content-Type: application/json" \
   -d '{
     "value": "abracadabra"
+  }'
+
+# A read-once secret
+curl -X POST http://localhost:5000/secrets \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": "abracadabra",
+    "readOnce: true
   }'
 ```
 
@@ -245,6 +254,8 @@ This will yield a secret ID like this:
 ```text
 runjs:secret:fc719aab80ac402fa14e36038d948437
 ```
+
+> 💡 A read-once secret can be used in cases where the calling side has an OAuth token that should only be used once for the API call.  It will be discarded as soon as it is read.  Be careful, though: the LLM may make the call multiple times!
 
 To test whether it gets replaced with the actual value in the request, you can set it in the body somewhere (normally, it would just get replaced in the headers).
 
