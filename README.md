@@ -9,11 +9,17 @@ docker run -p 5000:8080 \
   -e RunJSConfig__Jint__LimitMemory=10000000 \
   -e RunJSConfig__Jint__TimeoutIntervalSeconds=30 \
   cdigs/runjs-mcp-server
+
+# The default secret storage is ephemeral and disappears when
+# the container restarts.  For persistent storage, set the
+# connection string and flip it to use the database (see below).
 ```
 
 This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.  It is equipped with a `fetch` analogue implemented using `System.Net.HttpClient` that allows your generated JavaScript to make web requests 😎.  A web API is also provided to store secrets securely so that API calls using API keys can be used.
 
 This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
+
+[![Quick intro of the RunJS MCP server](https://github.com/user-attachments/assets/34c92310-d05d-4f52-846e-abcc42e82bdf)](https://youtu.be/S3NNgr1wMVI)
 
 The RunJS MCP server uses [Jint](https://github.com/sebastienros/jint) -- a C# library that embeds a JavaScript runtime into .NET and allows controlling the execution sandbox by specifying:
 

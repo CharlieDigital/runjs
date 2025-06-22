@@ -102,11 +102,6 @@ public static partial class JintTool
             engine.Modules.Import("./jsonpath-plus.browser-esm.min.js");
         }
 
-        if (hasJsonPathQuery)
-        {
-            // TODO: Load the library
-        }
-
         var result = engine.Evaluate(code).UnwrapIfPromise();
 
         Log.Here()
