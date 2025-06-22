@@ -4,8 +4,9 @@ using ILogger = Serilog.ILogger;
 namespace RunJS;
 
 /// <summary>
-/// Provides symmetric encryption for storing encrypted values as strings using .NET's built-in data protection.
-/// Uses AES-256-CBC with HMAC-SHA256 for authenticated encryption.
+/// Provides symmetric encryption for storing encrypted values as strings using
+/// .NET's built-in data protection. Uses AES-256-CBC with HMAC-SHA256 for
+/// authenticated encryption.
 /// </summary>
 public class EncryptionService(IDataProtector dataProtector)
 {

@@ -5,6 +5,8 @@ using ILogger = Serilog.ILogger;
 
 namespace RunJS;
 
+// TODO: This is not a complete interface, but a close enough facsimile
+
 /// <summary>
 /// .NET `HttpClient` implementation that provides a JS `fetch`-like interface.
 /// This will be handed to the Jint Engine to allow it to execute HTTP requests.
@@ -128,8 +130,9 @@ public class FetchHttpClient() : IDisposable
             }
         }
 
-        // The `HttpResponseMessage` is not disposed here because it is passed to the `FetchResponse`
-        // which needs to be able to read the response content stream.
+        // The `HttpResponseMessage` is not disposed here because it is passed to
+        // the `FetchResponse` which needs to be able to read the response content
+        // stream.  So we hold these and dispose them later in the `Dispose` method.
         try
         {
             var response = await _httpClient.SendAsync(request);

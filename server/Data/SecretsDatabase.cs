@@ -2,10 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RunJS;
 
-// This is our database.  The key is to inherit from DbContext
 public partial class SecretsDatabase(AppConfig config) : DbContext
 {
-    // This method gets called on startup and we'll configure our database
+    /// <summary>
+    /// Configure Postgres for sanity (e.g. use snake_case)
+    /// </summary>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (optionsBuilder.IsConfigured)

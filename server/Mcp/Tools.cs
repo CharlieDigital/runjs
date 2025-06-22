@@ -34,11 +34,11 @@ public static class JintTool
         Description(
             """
                 Runs JavaScript code and returns the result.
-                Wrap the code statements in an IIFE like so:
+                ALWAYS wrap the code statements in an IIFE like so:
                 (async () => { /* YOUR CODE STATEMENTS HERE */ })().
                 The last statement should return a value.
                 If you need to access a web API, you can access it via `fetch`.
-                Be sure to handle promises with async/await
+                Be sure to handle promises with async/await.
                 Call .json() or .text() on the response to get the payload.
                 If the API call requires a secret header, use a placeholder for the value.
                 The secret placeholder will be in the form `runjs:secret:<GUID>`.
