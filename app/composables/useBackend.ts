@@ -22,19 +22,25 @@ export function useBackend() {
   watch(
     service,
     (svc) => {
+      let promptText = "";
+
       if (svc === "jsonplaceholder") {
-        prompt.value =
+        promptText =
           "Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/. " +
           'Create a new post: { "title": "Hello", "body": "runjs:secret:SECRET_GUID_HERE", "userId": 1 }. ' +
-          "Include the Authorization header with the secret key runjs:secret:SECRET_GUID_HERE. " +
-          'Return whether the JSON contains the phrase "abracadabra" anywhere in the response. ';
+          'Read the result and return whether the return JSON from the API call contains the phrase "abracadabra" anywhere (case insensitive). ';
       } else {
-        prompt.value =
+        promptText =
           "Generate some JavaScript that will POST to https://httpbin.org/post. " +
           "Use the the authorization header with value: runjs:secret:SECRET_GUID_HERE " +
           "Just return the raw response; do not modify it; do not add your commentary. " +
           "Give me the full response directly as text.";
       }
+
+      prompt.value =
+        secretId.value === "none"
+          ? promptText
+          : promptText.replace(/runjs:secret:[\w]+/g, secretId.value);
     },
     { immediate: true }
   );

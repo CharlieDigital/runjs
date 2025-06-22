@@ -38,14 +38,14 @@ public static class JintTool
                 (async () => { /* YOUR CODE STATEMENTS HERE */ })().
                 The last statement should return a value.
                 If you need to access a web API, you can access it via `fetch`.
-                Be sure to handle promises with async/await.
+                Be sure to handle promises with async/await syntax!
                 Call .json() or .text() on the response to get the payload.
                 If the API call requires a secret header, use a placeholder for the value.
-                The secret placeholder will be in the form `runjs:secret:<GUID>`.
+                The secret placeholder will be in the form: runjs:secret:<GUID>.
                 Be sure to return a value at the end.
 
-                The user may provide a secret ID for using an API.
-                If present, it will have the format `runjs:secret:<GUID>`.
+                The user may provide a secret ID for using an API or to be replaced..
+                If present, it will have the format: runjs:secret:<GUID>.
                 If it is not present, ignore it and the secretId is an empty string.
                 """
         )
@@ -56,7 +56,7 @@ public static class JintTool
         )]
             string code,
         [Description(
-            "A secret ID to use for fetching API keys if provided by the user."
+            "A secret ID in the form of `runjs:secret:<GUID>` if present anywhere."
         )]
             string secretId,
         SecretsService secretsService,
