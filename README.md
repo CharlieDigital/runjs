@@ -158,9 +158,26 @@ dotnet run --project server
 dotnet watch run --project server --non-interactive
 ```
 
-## Running the Client
+## Running the Web App
+
+There is a Nuxt app in the `/app` directory:
 
 ```shell
+# Make a copy of the .env.sample as .env
+cd app
+npm run dev
+```
+
+This will start the app on `http://localhost:3000`
+
+![RunJS Nuxt web app](./run-js-app.png)
+
+## Running the CLI Client
+
+If you prefer, the CLI client is a convenient way to test from the CLI without a UI:
+
+```shell
+# Make a copy of the .env.sample as .env
 cd cli
 npm run cli -- "My prompt goes here"
 ```
@@ -221,6 +238,8 @@ docker compose up
 ```
 
 You will also get the [Aspire Dashboard](https://aspiredashboard.com/) at [http://localhost:18888](http://localhost:18888) to trace the internal calls to the tools.
+
+This is an important tool as this will expose the actual JavaScript that is being generated and executed (minus the secrets).
 
 ---
 
