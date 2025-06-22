@@ -28,7 +28,22 @@ DO $EF$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "migration_id" = '20250621180643_Initial') THEN
     INSERT INTO "__EFMigrationsHistory" (migration_id, product_version)
-    VALUES ('20250621180643_Initial', '9.0.6');
+    VALUES ('20250621180643_Initial', '9.0.1');
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "migration_id" = '20250622001625_Read_Once') THEN
+    ALTER TABLE secrets ADD read_once boolean;
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "migration_id" = '20250622001625_Read_Once') THEN
+    INSERT INTO "__EFMigrationsHistory" (migration_id, product_version)
+    VALUES ('20250622001625_Read_Once', '9.0.1');
     END IF;
 END $EF$;
 COMMIT;

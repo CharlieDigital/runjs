@@ -18,15 +18,21 @@ public class SecretsService(
     /// database.
     /// </summary>
     /// <param name="value">The value to encrypt.</param>
+    /// <param name="readOnce">When true, it should be deleted after being read.</param>
     /// <returns>The ID of the newly created secret prefixed with `runjs:secret:`</returns>
-    public async Task<string> Store(string value)
+    public async Task<string> Store(string value, bool? readOnce = null)
     {
         var encryptedValue = encryptionService.Encrypt(value);
 
         var id = $"runjs:secret:{Guid.NewGuid():N}";
 
         await secretsDatabase.Secrets.AddAsync(
-            new Secret { Id = id, EncryptedValue = encryptedValue }
+            new Secret
+            {
+                Id = id,
+                EncryptedValue = encryptedValue,
+                ReadOnce = readOnce
+            }
         );
 
         await secretsDatabase.SaveChangesAsync();
@@ -47,6 +53,13 @@ public class SecretsService(
         {
             Log.Here().Warning("Secret with ID {Id} not found", id);
             throw new KeyNotFoundException($"Secret with ID {id} not found");
+        }
+
+        if (secret.ReadOnce == true)
+        {
+            // Delete the secret after reading it once
+            secretsDatabase.Secrets.Remove(secret);
+            await secretsDatabase.SaveChangesAsync();
         }
 
         return encryptionService.Decrypt(secret.EncryptedValue);

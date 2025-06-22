@@ -30,4 +30,12 @@ public class SecretsController(SecretsService secretsService) : ControllerBase
     }
 }
 
-public record AddSecretRequest(string Value);
+/// <summary>
+/// The payload for adding a secret.
+/// </summary>
+/// <param name="Value">The value to encrypt and store for the secret.</param>
+/// <param name="ReadOnce">
+/// When set to true, this means that the secret can only be read once.  This is
+///  useful if you need to pass in an OAuth token
+/// </param>
+public record AddSecretRequest(string Value, bool? ReadOnce);

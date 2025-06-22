@@ -69,4 +69,31 @@ public class TestSecretsStorage : IClassFixture<DatabaseFixture>
             encryptionService.Decrypt(secret.EncryptedValue)
         );
     }
+
+    [Fact]
+    public async Task Secrets_Are_Deleted_After_Reading_Once()
+    {
+        var encryptionService = CreateEncryptionService();
+        var originalValue = "This is a secret value";
+
+        var db = DatabaseFixture.CreateDbContext();
+
+        using var tx = await db.Database.BeginTransactionAsync();
+
+        var secretsService = new SecretsService(encryptionService, db);
+
+        var secretId = await secretsService.Store(originalValue, true);
+
+        db.ChangeTracker.Clear();
+
+        var decryptedValue = await secretsService.Retrieve(secretId);
+
+        Assert.Equal(originalValue, decryptedValue);
+
+        db.ChangeTracker.Clear();
+
+        var secret = await db.Secrets.FindAsync(secretId);
+
+        Assert.Null(secret); // Secret should be deleted after reading once
+    }
 }
