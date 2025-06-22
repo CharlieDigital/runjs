@@ -14,7 +14,10 @@ const anthropic = createAnthropic({
   apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
 });
 
-// Make an API call to open AI
+/**
+ * Makes the call to an LLM providing the MCP client as a tool using the Vercel
+ * AI SDK.
+ */
 export default defineEventHandler(async (event) => {
   const { prompt, platform } = await readBody(event);
 
