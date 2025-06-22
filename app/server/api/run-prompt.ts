@@ -3,6 +3,7 @@ import {
   experimental_createMCPClient as createMCPClient,
 } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
+import { traceProvider } from "~/utils/telemetry";
 
 // Make an API call to open AI
 export default defineEventHandler(async (event) => {
@@ -28,6 +29,10 @@ export default defineEventHandler(async (event) => {
     prompt: prompt?.toString(),
     maxSteps: 10,
     tools,
+    experimental_telemetry: {
+      isEnabled: true,
+      tracer: traceProvider.getTracer("ai"),
+    },
     system: `
 # Role
 You are a backend JavaScript developer with deep knowledge of Javascript, REST APIs, and web services.

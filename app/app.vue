@@ -161,6 +161,16 @@
             the LLM and retrieve it when we make the API call in code. If you use the
             <code>httpbin</code> service, you should see it in the output.
           </p>
+          <QSeparator spaced="md" />
+          <QChip
+            color="deep-purple"
+            class="full-width"
+            :icon="tabOutlineEyeCode"
+            @click="openAspireDashboard"
+            clickable
+            outline
+            >View OpenTelemetry Logs</QChip
+          >
         </QCardSection>
       </QCardSection>
     </QCard>
@@ -173,6 +183,7 @@ import {
   tabOutlineClipboardCheck,
   tabOutlineClipboardCopy,
   tabOutlineEye,
+  tabOutlineEyeCode,
   tabOutlineEyeOff,
   tabOutlineKey,
   tabOutlinePlayerPlay,
@@ -287,6 +298,10 @@ async function executePrompt() {
   } finally {
     executing.value = false;
   }
+}
+
+function openAspireDashboard() {
+  window.open("http://localhost:18888", "_blank");
 }
 </script>
 
