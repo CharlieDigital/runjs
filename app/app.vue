@@ -14,7 +14,7 @@
             <QSelect
               v-model="service"
               :options="services"
-              label="Service"
+              label="HTTP Test Service"
               color="deep-purple"
               hint="Select the service to call.  This will determine the API endpoint and parameters."
               outlined
@@ -22,14 +22,16 @@
           </QCardSection>
 
           <QItem>
-            <QItemSection>
-              <QItemLabel class="text-body2 text-bold">HTTP Test Service</QItemLabel>
-              <QItemLabel class="q-py-xs"
+            <QItemSection class="q-px-sm">
+              <QItemLabel class="q-py-xs q-px-xs"
                 ><a :href="serviceUrl" target="_blank" class="text-body2">{{
                   serviceUrl
                 }}</a></QItemLabel
               >
-              <QItemLabel caption>Click the link to see docs on this endpoint</QItemLabel>
+              <QItemLabel class="q-px-xs" caption
+                >Click the link to see docs on this endpoint (you can also use your own
+                endpoints)</QItemLabel
+              >
             </QItemSection>
           </QItem>
 
@@ -68,6 +70,7 @@
           </QCardSection>
           <QCardSection>
             <QChip
+              class="q-ml-sm"
               style="font-family: 'Reddit Mono', monospace"
               :icon="copied ? tabOutlineClipboardCheck : tabOutlineClipboardCopy"
               :color="copied ? 'light-green-6' : 'deep-purple'"

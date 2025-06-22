@@ -57,6 +57,21 @@ return obj.name;
 
 And use the RunJS MCP server to execute it 🚀
 
+## Architecture and Flow
+
+![RunJS architecture and flow](./run-js-arch.png)
+
+The diagram above provides an overview of the architecture and flow.
+
+1. A web API exposes a **Secrets Manager** to securely store secrets so that they are not exposed to the LLM.  The LLM refers to the secrets by ID and they are replaced at the point of executing the API call with the actual value.
+2. The secrets are encrypted and stored in a Postgres database
+3. A **secret ID** is returned to the caller; the caller stores this value instead.
+4. The prompt has instructions to execute JavaScript or make an API call; if any secrets are needed, they are referenced by the **secret ID**.
+5. The LLM generated JavaScript to make an API call or otherwise manipulate data and uses the **RunJS MCP server** to execute the JavaScript.
+6. The tool determines if it needs to retrieve a **secret value** and replace it with the **secret ID** in the generated code.
+7. The tool uses a `fetch` analogue (that is implemented using `System.Net.HttpClient`) to make HTTP requests now with the **secret value** injected!
+8. The result is returned from the tool to the LLM for further processing.
+
 ## Project Setup
 
 The project is set up in the following structure:
