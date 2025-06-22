@@ -23,6 +23,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write      # Required for attestation
+      attestations: write  # Required for attestation
 
     steps:
     - name: Checkout repository
