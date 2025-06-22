@@ -93,6 +93,16 @@
             />
           </QCardSection>
           <QCardActions align="right" class="q-pt-none">
+            <QSelect
+              v-model="platform"
+              class="q-mr-sm q-mt-md"
+              color="deep-purple"
+              :options="platforms"
+              dense
+              borderless
+            >
+              <template #prepend> <span class="text-caption">Platform</span> </template>
+            </QSelect>
             <QBtn
               color="deep-purple"
               class="q-mt-md"
@@ -196,6 +206,8 @@ const prompt = ref("");
 const result = ref("");
 const services = ref(["jsonplaceholder", "httpbin"]);
 const service = ref("httpbin");
+const platforms = ref(["OpenAI", "Anthropic"]);
+const platform = ref("OpenAI");
 const executing = ref(false);
 
 const { copied, copy } = useClipboard();
@@ -284,7 +296,7 @@ async function executePrompt() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt: prompt.value }),
+      body: JSON.stringify({ prompt: prompt.value, platform: platform.value }),
     });
 
     if (response.ok) {

@@ -3,17 +3,22 @@ import {
   experimental_createMCPClient as createMCPClient,
 } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { traceProvider } from "~/utils/telemetry";
+
+const openai = createOpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+});
+
+const anthropic = createAnthropic({
+  apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
+});
 
 // Make an API call to open AI
 export default defineEventHandler(async (event) => {
-  const { prompt } = await readBody(event);
+  const { prompt, platform } = await readBody(event);
 
-  console.log("Received prompt:", prompt);
-
-  const openai = createOpenAI({
-    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  });
+  console.log(`Using platform "${platform}" with prompt: ${prompt}`);
 
   const mcpClient = await createMCPClient({
     transport: {
@@ -24,8 +29,13 @@ export default defineEventHandler(async (event) => {
 
   const tools = await mcpClient.tools();
 
+  const model =
+    platform === "OpenAI"
+      ? openai("gpt-4.1-mini")
+      : anthropic("claude-3-7-sonnet-latest");
+
   const result = await generateText({
-    model: openai("gpt-4.1-mini"),
+    model,
     prompt: prompt?.toString(),
     maxSteps: 10,
     tools,
