@@ -4,7 +4,8 @@
 # To test locally
 docker pull cdigs/runjs-mcp-server
 
-docker run -p 5000:5000 \
+# Other options can also be set via ENV
+docker run -p 5000:8080 \
   -e RunJSConfig__Jint__LimitMemory=10000000 \
   -e RunJSConfig__Jint__TimeoutIntervalSeconds=30 \
   cdigs/runjs-mcp-server

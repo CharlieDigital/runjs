@@ -2,7 +2,7 @@
 export default defineEventHandler(async (event) => {
   const { secret } = await readBody(event);
 
-  const response = await fetch("http://localhost:5000/secrets", {
+  const response = await fetch(import.meta.env.VITE_SECRETS_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
