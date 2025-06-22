@@ -77,7 +77,7 @@ public static partial class JintTool
 
         var engine = new Engine(options =>
         {
-            options.LimitMemory(appConfig.Jint.LimitMemory); // 5 MB
+            options.LimitMemory(appConfig.Jint.LimitMemory);
             options.TimeoutInterval(
                 TimeSpan.FromSeconds(appConfig.Jint.TimeoutIntervalSeconds)
             );
