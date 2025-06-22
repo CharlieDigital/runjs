@@ -241,6 +241,8 @@ You will also get the [Aspire Dashboard](https://aspiredashboard.com/) at [http:
 
 This is an important tool as this will expose the actual JavaScript that is being generated and executed (minus the secrets).
 
+![OTEL tracing](./run-js-otel.png)
+
 ---
 
 ## Secrets
