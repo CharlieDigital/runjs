@@ -158,6 +158,17 @@ dotnet run --project server
 dotnet watch run --project server --non-interactive
 ```
 
+The server limits are configured via the `appsettings.json` file.  If you choose to deploy this (again, ***only into a private network***), you can override these at runtime on the container using .NET's environment variables:
+
+```shell
+RunJSConfig__Jint__LimitMemory=5000000
+RunJSConfig__Jint__TimeoutIntervalSeconds=10
+RunJSConfig__Jint__MaxStatements=100
+RunJSConfig__Db__ConnectionString=YOUR_CONNECTION_STRING
+```
+
+See [the .NET documentation](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-9.0#non-prefixed-environment-variables) for more details on runtime configuration.
+
 ## Running the Web App
 
 There is a Nuxt app in the `/app` directory:

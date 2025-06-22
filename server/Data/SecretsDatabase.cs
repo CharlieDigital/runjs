@@ -16,7 +16,7 @@ public partial class SecretsDatabase(AppConfig config) : DbContext
 
         optionsBuilder
             .UseNpgsql(
-                config.DbConfig.ConnectionString,
+                config.Db.ConnectionString,
                 o => o.UseAdminDatabase("postgres")
             )
             .UseSnakeCaseNamingConvention()

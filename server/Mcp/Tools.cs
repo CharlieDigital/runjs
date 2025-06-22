@@ -59,7 +59,8 @@ public static class JintTool
             "A secret ID to use for fetching API keys if provided by the user."
         )]
             string secretId,
-        SecretsService secretsService
+        SecretsService secretsService,
+        AppConfig appConfig
     )
     {
         Log.Here()
@@ -76,9 +77,11 @@ public static class JintTool
 
         var engine = new Engine(options =>
         {
-            options.LimitMemory(5_000_000); // 5 MB
-            options.TimeoutInterval(TimeSpan.FromSeconds(10));
-            options.MaxStatements(500);
+            options.LimitMemory(appConfig.Jint.LimitMemory); // 5 MB
+            options.TimeoutInterval(
+                TimeSpan.FromSeconds(appConfig.Jint.TimeoutIntervalSeconds)
+            );
+            options.MaxStatements(appConfig.Jint.MaxStatements);
             options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
         });
 

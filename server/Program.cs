@@ -5,11 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Load the configuration.
 builder.Services.Configure<AppConfig>(
-    builder.Configuration.GetSection(nameof(AppConfig))
+    builder.Configuration.GetSection("RunJSConfig")
 );
 
 var currentConfig = builder
-    .Configuration.GetSection(nameof(AppConfig))
+    .Configuration.GetSection("RunJSConfig")
     .Get<AppConfig>();
 
 if (currentConfig == null)
