@@ -43,7 +43,6 @@ public static partial class JintTool
 
                 You may also use jsonpath-plus library to query to extract values using JSONPath.
                 You should use the JSONPath like this: JSONPath.JSONPath({path: '<JSON_PATH_QUERY_HERE>', json: <JSON_OBJECT>});
-                If the code uses JSONPath queries, then `hasJsonPathQuery` should be set to true so that the library is loaded.
                 """
         )
     ]
@@ -52,8 +51,6 @@ public static partial class JintTool
             "The JavaScript code to execute; returns 'void' if there is no result."
         )]
             string code,
-        [Description("If true, the code will be executed with a JSONPath query.")]
-            bool hasJsonPathQuery,
         ISecretsService secretsService,
         AppConfig appConfig
     )
@@ -72,6 +69,11 @@ public static partial class JintTool
             // TODO: Optimize this if there are many secret IDs
             code = code.Replace(secretId, await secretsService.Retrieve(secretId));
         }
+
+        var hasJsonPathQuery = code.Contains(
+            "JSONPath",
+            StringComparison.OrdinalIgnoreCase
+        );
 
         var engine = new Engine(options =>
         {
