@@ -4,6 +4,7 @@ applyTo: "**"
 # RunJS Project Overview
 - This application is building an MCP server in C# and .NET 9 (C# version 13)
 - You can use any C# features up to this version
+- The Docker Hub image name is `cdigs/runjs-mcp-server`; the username is `cdigs` and the repository is `runjs-mcp-server`
 
 ## Naming Conventions
 - In .cs files, do not use `this` and prefer to use `_` prefix for private fields
