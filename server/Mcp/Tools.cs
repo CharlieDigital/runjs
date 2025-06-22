@@ -33,19 +33,15 @@ public static class JintTool
         McpServerTool(Name = "runJavaScript"),
         Description(
             """
-                Runs JavaScript code and returns the result.
-                ALWAYS wrap the code statements in an IIFE like so:
-                (async () => { /* YOUR CODE STATEMENTS HERE */ })().
-                The last statement should return a value.
+                Runs generated JavaScript code that returns a result.
+                ALWAYS wrap the code statements in an IIFE like so: (async () => { /* YOUR CODE STATEMENTS HERE */ })().
+                The last statement should be a return statement returning a value.
                 If you need to access a web API, you can access it via `fetch`.
-                Be sure to handle promises with async/await syntax!
                 Call .json() or .text() on the response to get the payload.
-                If the API call requires a secret header, use a placeholder for the value.
-                The secret placeholder will be in the form: runjs:secret:<GUID>.
-                Be sure to return a value at the end.
+                Be sure to handle promises with async/await syntax!
 
-                The user may provide a secret ID for using an API or to be replaced..
-                If present, it will have the format: runjs:secret:<GUID>.
+                The user may provide a secret ID for using an API or to be replaced in the script.
+                If the API call requires a secret header, the placeholder will be in the form: runjs:secret:<GUID>.
                 If it is not present, ignore it and the secretId is an empty string.
                 """
         )

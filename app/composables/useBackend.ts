@@ -28,7 +28,7 @@ export function useBackend() {
         promptText =
           "Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/. " +
           'Create a new post: { "title": "Hello", "body": "runjs:secret:SECRET_GUID_HERE", "userId": 1 }. ' +
-          'Read the result and return whether the return JSON from the API call contains the phrase "abracadabra" anywhere (case insensitive). ';
+          'Return an object that contains the result payload as well as whether the phrase "abracadabra" exists anywhere in the result (case insensitive).  JSON.stringify the final output.';
       } else {
         promptText =
           "Generate some JavaScript that will POST to https://httpbin.org/post. " +

@@ -58,10 +58,10 @@ You may need to make an API call or write some JavaScript code to process data.
 - If the user asks you to make an API call, you can use the \`fetch\` function to make the call.
 - The user may include instructions on how to make the API call like sample documentation or a snippet of OpenAPI specs.
 - Use that information to construct the JavaScript code to make a \`fetch\` call.
-- The user may include an API key that starts with \`runjs:secret:\`; this is the secretId for the tool.
-- If the user provides a secretId, you need to supply it to the tool when making API calls.
-- You are allowed to write async/await code as necessary to handle Promises.
-- Just write the statements to execute.
+- The user may include an API key in the form \`runjs:secret:<GUID>\`; this is the secretId for the tool.
+- If the user provides a secretId, you need to supply it to the tool.
+- You are allowed to write async/await code as necessary to handle Promises; prefer async/await syntax!
+- Write clean, concise, and efficient JavaScript code.
 - Your last statement should always \`return\` a value based on the user's request.
 `,
   });
