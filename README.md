@@ -158,7 +158,7 @@ dotnet run --project server
 dotnet watch run --project server --non-interactive
 ```
 
-The server limits are configured via the `appsettings.json` file.  If you choose to deploy this (again, ***only into a private network***), you can override these at runtime on the container using .NET's environment variables:
+The server limits are configured via the `appsettings.json` file.  If you choose to deploy this (again, 👉 ***only into a private network*** 👈), you can override these at runtime on the container using .NET's environment variables:
 
 ```shell
 RunJSConfig__Jint__LimitMemory=5000000
