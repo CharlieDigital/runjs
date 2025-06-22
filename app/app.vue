@@ -79,7 +79,7 @@
 
         <QSeparator vertical class="gt-sm" />
 
-        <RightPanel />
+        <RightPanel :platform />
       </QCardSection>
     </QCard>
   </div>
@@ -110,9 +110,11 @@ const {
 
 code {
   font-family: "Reddit Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
   background-color: #f5f5f5;
   color: #454545;
-  padding: 0.05rem 0.4rem;
+  padding: 0px 0.4rem;
   border-radius: 4px;
   white-space: nowrap;
   border: 1px solid #ddd;

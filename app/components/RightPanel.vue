@@ -15,7 +15,7 @@
         Run the MCP server by navigating to the <code>/server</code> directory and
         executing <code>dotnet run</code>.
       </li>
-      <li>Edit the <code>.env</code> OpenAI API key for the backend</li>
+      <li>Edit the {{ platform }} API key for the app in <code>app/.env</code></li>
       <li>
         To test with the storage of secret values like API keys, enter the value in the
         <strong>"Secret Value"</strong> field and click <strong>"Store Secret"</strong>.
@@ -30,13 +30,13 @@
       from the response in the <strong>"Prompt"</strong> field
     </p>
     <p>
-      The app will use the OpenAI API to generate a JavaScript function that makes the API
-      call and extracts the data you want. That JavaScript is passed to the RunJS MCP
-      server to execute.
+      The app will use the {{ platform }} API to generate a JavaScript function that makes
+      the API call and extracts the data you want. That JavaScript is passed to the RunJS
+      MCP server to execute.
     </p>
     <p>
-      The purpose the secret is to demonstrate that we can hide sensitive keys from the
-      LLM and retrieve it when we make the API call in code. If you use the
+      The secret hides sensitive keys from the LLM and retrieves it when we make the API
+      call in code. If you use the
       <code>httpbin</code> service, you should see it in the output.
     </p>
     <QSeparator spaced="md" />
@@ -53,6 +53,10 @@
 
 <script setup lang="ts">
 import { tabOutlineEyeCode } from "quasar-extras-svg-icons/tabler-icons-v3";
+
+defineProps<{
+  platform: string;
+}>();
 
 function openAspireDashboard() {
   window.open("http://localhost:18888", "_blank");
