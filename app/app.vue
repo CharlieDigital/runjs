@@ -124,12 +124,4 @@ textarea {
   font-family: "Reddit Mono", monospace;
   font-size: 0.9rem;
 }
-
-ol {
-  margin: none;
-}
-
-li {
-  margin-bottom: none;
-}
 </style>

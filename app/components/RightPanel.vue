@@ -1,9 +1,9 @@
 <template>
-  <QCardSection class="col-4 text-body2 text-grey-8 gt-sm">
+  <QCardSection class="col-4 text-body2 text-grey-7 gt-sm bg-grey-1">
     <p>
-      This is a demo app for RunJS, an MCP server that lets LLMs generate and execute
-      JavaScript securely in a .NET runtime using the
-      <strong>Jint</strong> C# JavaScript interpreter.
+      This is a demo app for RunJS: an MCP server that lets LLMs generate and execute
+      JavaScript safely in a .NET runtime using the
+      <strong>Jint</strong> C# JavaScript interpreter and a built-in secret manager.
     </p>
     <p>To get started:</p>
     <ol>
@@ -21,8 +21,8 @@
         <strong>"Secret Value"</strong> field and click <strong>"Store Secret"</strong>.
       </li>
       <li>
-        Select an API service from the dropdown menu to test against and check the
-        documentation to see valid requests.
+        Select a sample API service for a quick test; view the documentation for endpoints
+        on the sample API.
       </li>
     </ol>
     <p>
@@ -31,8 +31,8 @@
     </p>
     <p>
       The app will use the {{ platform }} API to generate a JavaScript function that makes
-      the API call and extracts the data you want. That JavaScript is passed to the RunJS
-      MCP server to execute.
+      the API call and extracts the data you want. The JS is executed securely in the MCP
+      RunJS server with secrets injection.
     </p>
     <p>
       The secret hides sensitive keys from the LLM and retrieves it when we make the API
@@ -63,4 +63,12 @@ function openAspireDashboard() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+ol {
+  margin-left: -12px;
+}
+
+li {
+  margin-bottom: none;
+}
+</style>

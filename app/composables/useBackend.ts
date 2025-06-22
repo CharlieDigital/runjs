@@ -14,7 +14,7 @@ export function useBackend() {
         return;
       }
 
-      prompt.value = prompt.value.replace(/runjs:secret:SECRET_GUID_HERE/g, id);
+      prompt.value = prompt.value.replace(/runjs:secret:[\w]+/g, id);
     },
     { immediate: true }
   );

@@ -11,7 +11,7 @@
       <template #append>
         <QBtn
           color="deep-purple"
-          :icon="showSecret ? tabOutlineEyeOff : tabOutlineEye"
+          :icon="showSecret ? tabOutlineEye : tabOutlineEyeOff"
           @click="showSecret = !showSecret"
           flat
           rounded
