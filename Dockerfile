@@ -21,8 +21,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/published-app /app
 
-# TODO: Add options here for configuring Jint
 ENV ASPNETCORE_ENVIRONMENT=Production
+
+# 👇 Override as you need!
 ENV RunJSConfig__Jint__LimitMemory=5000000
 ENV RunJSConfig__Jint__TimeoutIntervalSeconds=10
 ENV RunJSConfig__Jint__MaxStatements=1000
