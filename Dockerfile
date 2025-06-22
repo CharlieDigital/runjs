@@ -23,6 +23,11 @@ COPY --from=build /app/published-app /app
 
 # TODO: Add options here for configuring Jint
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV RunJSConfig__Jint__LimitMemory=5000000
+ENV RunJSConfig__Jint__TimeoutIntervalSeconds=10
+ENV RunJSConfig__Jint__MaxStatements=1000
+ENV RunJSConfig__Secrets__UseDatabase=false
+ENV RunJSConfig__Db__ConnectionString=YOUR_CONNECTION_STRING
 
 # Start the MCP server
 ENTRYPOINT [ "dotnet", "/app/runjs-server.dll" ]

@@ -1,5 +1,15 @@
 # RunJS - A .NET MCP Server to Run JS Using Jint
 
+```shell
+# To test locally
+docker pull cdigs/runjs-mcp-server
+
+docker run -p 5000:5000 \
+  -e RunJSConfig__Jint__LimitMemory=10000000 \
+  -e RunJSConfig__Jint__TimeoutIntervalSeconds=30 \
+  cdigs/runjs-mcp-server
+```
+
 This project contains an MCP server that can execute JavaScript in an isolated sandbox and return a result from the script.  It is equipped with a `fetch` analogue implemented using `System.Net.HttpClient` that allows your generated JavaScript to make web requests 😎.  A web API is also provided to store secrets securely so that API calls using API keys can be used.
 
 This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
