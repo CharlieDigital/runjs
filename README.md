@@ -67,10 +67,14 @@ The diagram above provides an overview of the architecture and flow.
 2. The secrets are encrypted and stored in a Postgres database
 3. A **secret ID** is returned to the caller; the caller stores this value instead.
 4. The prompt has instructions to execute JavaScript or make an API call; if any secrets are needed, they are referenced by the **secret ID**.
-5. The LLM generated JavaScript to make an API call or otherwise manipulate data and uses the **RunJS MCP server** to execute the JavaScript.
-6. The tool determines if it needs to retrieve a **secret value** and replace it with the **secret ID** in the generated code.
-7. The tool uses a `fetch` analogue (that is implemented using `System.Net.HttpClient`) to make HTTP requests now with the **secret value** injected!
-8. The result is returned from the tool to the LLM for further processing.
+5. The LLM generates JavaScript to make an API call or otherwise manipulate data and uses the **RunJS MCP server** to execute the JavaScript.  This is actually a tool call originating from the app (not from the LLM) which is why the `localhost` URLs work (and why this will work in your private network upstream).
+6. The SDK (e.g. Vercel AI SDK, Semantic Kernel) sends the call to the MCP server with the generated JavaScript and any secret IDs it extracted from the call.
+7. If a **secret ID** is provided, the server will exchange it for the actual value.
+8. The actual value is returned and handed to the tool implementation.
+9. The tool uses a `fetch` analogue (that is implemented using `System.Net.HttpClient`) to make HTTP requests now with the **secret value** injected!
+10. The result is returned from the tool to the LLM for further processing (it is actually indirect through the SDK (meaning it goes back to the Nuxt app in this case and is handed to the LLM as the response to the tool invocation)).
+
+It's convoluted if it's the first time you're working with MCP, but just keep in mind that all of this works locally and it should start to click which way and how the calls flow; the LLM will never see the actual secret.
 
 ## Project Setup
 
