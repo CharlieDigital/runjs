@@ -9,12 +9,12 @@ applyTo: "**"
 - In .cs files, do not use `this` and prefer to use `_` prefix for private fields
 
 ## Coding Style
-- Prefer modern .NET conventions like primary constructors, inline arrays, var, record types, etc.
+- Prefer modern .NET conventions like primary constructors, collection initializers, var, record types, etc.
 - Always use braces { } for control structures (if, for, while, etc.); do not leave them out even for single line statements
 - When writing tests, use test function names like `MethodName_StateUnderTest_ExpectedBehavior` to clearly describe the test's purpose
 
 ## Commenting
-- Add comments to explain logical decision
+- Add comments to explain logical decisions
 - Document all function inputs
 - Be descriptive with function comments
 - When mentioning types, class names, etc in comments, use markdown backticks like `this` or `MyClass`
@@ -28,7 +28,7 @@ applyTo: "**"
 ## Key Files
 
 ## Logging
-This codebase is using Serilog for logging.  To create a logger for a class, us the following pattern:
+This codebase is using Serilog for logging.  To create a logger for a class, use the following pattern:
 
 ```csharp
 // If it is a static class
