@@ -296,3 +296,13 @@ Then test with the following prompt:
 ```shell
 npm run cli -- 'Generate some JavaScript that will POST to https://jsonplaceholder.typicode.com/posts/ and create a new post: { "title": "Hello", "body": "runjs:secret:fc719aab80ac402fa14e36038d948437", "userId": 1 }.  Include the Authorization header with the secret key runjs:secret:fc719aab80ac402fa14e36038d948437.  Return whether the JSON contains the phrase "abracadabra" anywhere in the response.'
 ```
+
+## Building the Container
+
+To build the container, follow these steps:
+
+1. Modify the `./server/appsettings.json` if you'd like (or set the environment variables on your container).
+2. Review the `./Dockerfile` to determine if you need any changes
+3. Run the `./db-script.sh` (or copy out the commands and run manually if you're on Windows)
+
+Your container is ready to ship ***into a private network only***.
