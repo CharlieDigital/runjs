@@ -17,7 +17,7 @@ public class Secret
 
     /// <summary>
     /// When true, the secret is deleted after being read once via the
-    /// <see cref="SecretsService"/>.
+    /// <see cref="DbSecretsService"/>.
     /// </summary>
     public bool? ReadOnce { get; set; }
 }

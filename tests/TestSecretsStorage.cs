@@ -80,7 +80,7 @@ public class TestSecretsStorage : IClassFixture<DatabaseFixture>
 
         using var tx = await db.Database.BeginTransactionAsync();
 
-        var secretsService = new SecretsService(encryptionService, db);
+        var secretsService = new DbSecretsService(encryptionService, db);
 
         var secretId = await secretsService.Store(originalValue, true);
 

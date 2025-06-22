@@ -6,12 +6,13 @@ namespace RunJS;
 /// Service which provides the operations for storing and retrieving encrypted
 /// secrets using the <see cref="EncryptionService"/>
 /// </summary>
-public class SecretsService(
+public class DbSecretsService(
     EncryptionService encryptionService,
     SecretsDatabase secretsDatabase
-)
+) : ISecretsService
 {
-    private static readonly ILogger Log = Serilog.Log.ForContext<SecretsService>();
+    private static readonly ILogger Log =
+        Serilog.Log.ForContext<DbSecretsService>();
 
     /// <summary>
     /// Encrypts a value using the data protection service and stores it in the

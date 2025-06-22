@@ -168,6 +168,7 @@ The server limits are configured via the `appsettings.json` file.  If you choose
 RunJSConfig__Jint__LimitMemory=5000000
 RunJSConfig__Jint__TimeoutIntervalSeconds=10
 RunJSConfig__Jint__MaxStatements=100
+RunJSConfig__Secrets__UseInMemory=false
 RunJSConfig__Db__ConnectionString=YOUR_CONNECTION_STRING
 ```
 

@@ -9,7 +9,7 @@ namespace RunJS;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-public class SecretsController(SecretsService secretsService) : ControllerBase
+public class SecretsController(ISecretsService secretsService) : ControllerBase
 {
     private static readonly ILogger Log =
         Serilog.Log.ForContext<SecretsController>();

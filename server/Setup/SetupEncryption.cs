@@ -16,7 +16,7 @@ public static class SetupEncryptionExtension
             .PersistKeysToFileSystem(new DirectoryInfo("./.keys"))
             .SetApplicationName("runjs-mcp-server");
 
-        services.AddSingleton<EncryptionService>(provider =>
+        services.AddSingleton(provider =>
         {
             var dataProtectionProvider =
                 provider.GetRequiredService<IDataProtectionProvider>();

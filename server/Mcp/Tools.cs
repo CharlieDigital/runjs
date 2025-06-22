@@ -55,7 +55,7 @@ public static class JintTool
             "A secret ID in the form of `runjs:secret:<GUID>` if present anywhere."
         )]
             string secretId,
-        SecretsService secretsService,
+        ISecretsService secretsService,
         AppConfig appConfig
     )
     {
