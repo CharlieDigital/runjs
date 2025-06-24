@@ -2,6 +2,14 @@
 
 This project contains an MCP server that can execute JavaScript *safely* in an isolated sandbox and return a result from the script.  It is equipped with a `fetch` analogue implemented using `System.Net.HttpClient` that allows your generated JavaScript to make web requests as well as JSONPath to manipulate the results 😎.  A web API is also provided to store secrets securely so that API calls using API keys can be used.  With this MCP server, you can basically interact with any REST API.
 
+## Key Features
+
+- Integrated secrets manager to securely store encrypted API keys
+- Sandboxed JavaScript execution without infrastructure (e.g. deploy a container or serverless function)
+- Pre-loaded with a `fetch` analogue for making HTTP requests
+- Pre-loaded with `jsonpath-plus` to process JSON payloads
+- Integrated resilience pipeline (via Polly) for retries on HTTP requests
+
 [![Quick intro of the RunJS MCP server](https://github.com/user-attachments/assets/34c92310-d05d-4f52-846e-abcc42e82bdf)](https://youtu.be/S3NNgr1wMVI)
 
 ```shell
