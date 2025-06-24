@@ -26,7 +26,7 @@ The RunJS MCP server uses [Jint](https://github.com/sebastienros/jint) -- a C# l
 - Runtime
 - Depth of calls (recursion)
 
-This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.
+This is extremely powerful as in many cases, you may want to run JavaScript, but doing it *safely* is challenging because of the nature of JavaScript and generated code.  Because the generated JavaScript is run in a C# interpreter, there's no chance of leaking environment variables, no chance of malicious packages, no chance of the JS crashing the server process.
 
 Using this mechanism can unlock a lot of use cases where JavaScript is needed to process some JSON, for example, and return text or run some transformation logic on incoming data.
 
