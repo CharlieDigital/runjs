@@ -20,11 +20,13 @@ if (currentConfig == null)
 // Setup the services
 builder.AddCustomLogging();
 builder.Services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
-builder.Services.AddTelemetry(); // OpenTelemetry @ http://localhost:18888
 builder.Services.AddControllers();
-builder.Services.AddSingleton(currentConfig);
-builder.Services.AddEncryption();
-builder.Services.AddSecretsServices(currentConfig);
+builder
+    .Services.AddTelemetry() // OpenTelemetry @ http://localhost:18888
+    .AddSingleton(currentConfig)
+    .AddEncryption()
+    .AddSecretsServices(currentConfig)
+    .AddResilience();
 
 // Build and start app
 var app = builder.Build();

@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Jint;
 using ModelContextProtocol.Server;
+using Polly;
 using ILogger = Serilog.ILogger;
 
 namespace RunJS;
@@ -52,7 +53,8 @@ public static partial class JintTool
         )]
             string code,
         ISecretsService secretsService,
-        AppConfig appConfig
+        AppConfig appConfig,
+        ResiliencePipeline<HttpResponseMessage> pipeline
     )
     {
         var secretIds = ExtractAllSecretIds(code).ToList();
@@ -92,7 +94,7 @@ public static partial class JintTool
             }
         });
 
-        using var client = new FetchHttpClient();
+        using var client = new FetchHttpClient(pipeline);
 
         engine.SetValue("fetch", client.Fetch);
 

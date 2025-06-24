@@ -11,7 +11,7 @@ namespace RunJS;
 /// </summary>
 public static class SetupTelemetryExtension
 {
-    public static void AddTelemetry(this IServiceCollection services)
+    public static IServiceCollection AddTelemetry(this IServiceCollection services)
     {
         services
             .AddOpenTelemetry()
@@ -29,5 +29,7 @@ public static class SetupTelemetryExtension
             )
             .WithLogging()
             .UseOtlpExporter();
+
+        return services;
     }
 }

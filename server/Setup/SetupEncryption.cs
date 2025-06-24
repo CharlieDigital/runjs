@@ -9,7 +9,7 @@ public static class SetupEncryptionExtension
     /// secret values stored in the database.
     /// </summary>
     /// <param name="services"></param>
-    public static void AddEncryption(this IServiceCollection services)
+    public static IServiceCollection AddEncryption(this IServiceCollection services)
     {
         services
             .AddDataProtection()
@@ -23,5 +23,7 @@ public static class SetupEncryptionExtension
             var protector = dataProtectionProvider.CreateProtector("RunJS.Values");
             return new EncryptionService(protector);
         });
+
+        return services;
     }
 }
