@@ -10,7 +10,7 @@ This project contains an MCP server that can execute JavaScript *safely* in an i
 - Pre-loaded with `jsonpath-plus` to process JSON payloads
 - Integrated resilience pipeline (via Polly) for retries on HTTP requests
 
-[![Quick intro of the RunJS MCP server](https://github.com/user-attachments/assets/34c92310-d05d-4f52-846e-abcc42e82bdf)](https://youtu.be/S3NNgr1wMVI)
+[![Quick intro of the RunJS MCP server](https://github.com/user-attachments/assets/643b2766-a7bf-4f27-be28-21ab1f3c4041](https://youtu.be/S3NNgr1wMVI)
 
 ```shell
 # To test locally
